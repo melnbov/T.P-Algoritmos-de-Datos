@@ -1,15 +1,4 @@
-
 from canchas import mostrar_canchas
-
-reservas=[] # esto iria en el main
-
-dias=[ "28/08/2026",
-    "29/08/2026",
-    "30/08/2026",
-    "31/08/2026",
-    "01/09/2026",
-    "02/09/2026",
-    "03/09/2026"] # Esto iria en el main 
 
 def verificar_numero_cancha(buscado,canchas):
     """Verifica si existe una cancha con el numero ingresado por el usuario"""
@@ -26,15 +15,15 @@ def obtener_precio_cancha(canchas,num_cancha):
 
 def seleccionar_dia(dias):
     """Permite al usuario seleccionar el dia en el que desea realizar la reserva"""
-    print("Seleccione el dia: ")
+    print("Seleccione el día: ")
     for i in range(len(dias)):
         print(i+1,"-",dias[i])
 
     opcion=int(input("Ingrese una opcion: "))
 
     while opcion < 1 or opcion > len(dias):
-        print("La opcion ingresada no es valida. ")
-        opcion=int(input("Ingrese nuevamente una opcion: "))
+        print("La opción ingresada no es valida. ")
+        opcion=int(input("Ingrese nuevamente una opción: "))
     return dias[opcion-1]
 
 def validar_horario(horario_entrada,horario_salida):
@@ -89,7 +78,7 @@ def crear_reserva(canchas, reservas, dias, cliente):
     """Permite al cliente crear una nueva reserva."""
 
     print("\n================================")
-    print("        CREAR RESERVA")
+    print("CREAR RESERVA")
     print("================================")
 
     # Seleccionar día

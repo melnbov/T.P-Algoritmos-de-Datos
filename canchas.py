@@ -1,12 +1,9 @@
-def existe_cancha(canchas, numero): #La separo pq la necesito en varias funciones, es para saber si el numero de cancha ya esta registrado
-
+def existe_cancha(canchas, numero): 
     """
     Verifica si un número de cancha ya se encuentra registrado.
-
     Parámetros:
         canchas: lista de canchas registradas.
         numero: número de cancha que se desea verificar.
-
     Retorna:
         True si la cancha existe y False si no existe.
     """
@@ -15,25 +12,21 @@ def existe_cancha(canchas, numero): #La separo pq la necesito en varias funcione
     for cancha in canchas:
         if cancha[0] == numero:
             existe = True
-
     return existe
     
-
-def elegir_tipo_piso():      # tipos de piso
-
+def elegir_tipo_piso():
     """
     Muestra los tipos de piso disponibles y solicita al usuario que seleccione uno.
     Valida que la opción ingresada sea correcta.
-
     Retorna:
         El tipo de piso seleccionado: Cemento, Cesped sintetico o Resina.
     """
     print("Tipos de piso de las canchas: ")
     print("1. Cemento")
-    print("2. Cesped sintetico")
+    print("2. Cesped sintético")
     print("3. Resina")
     
-    numero_tipo_piso = input("Ingrese el numero que identifica al tipo de piso: ")
+    numero_tipo_piso = input("Ingrese el número que identifica al tipo de piso: ")
     
     while numero_tipo_piso != "1" and numero_tipo_piso != "2" and numero_tipo_piso != "3":
         print("Opción inválida.")
@@ -43,19 +36,17 @@ def elegir_tipo_piso():      # tipos de piso
         tipo_piso = "Cemento"
     
     elif numero_tipo_piso == "2":
-        tipo_piso = "Cesped sintetico"
+        tipo_piso = "Cesped sintético"
     
     elif numero_tipo_piso == "3":
         tipo_piso = "Resina"
 
     return tipo_piso
 
-def elegir_tipo_techo():  #tipos de techo
-
+def elegir_tipo_techo(): 
     """
     Muestra los tipos de techo disponibles y solicita al usuario que seleccione uno.
     Valida que la opción ingresada sea correcta.
-
     Retorna:
         El tipo de techo seleccionado: Techada o No techada.
     """
@@ -64,35 +55,26 @@ def elegir_tipo_techo():  #tipos de techo
     print("1. Techada")
     print("2. No techada")
 
-    numero_tipo_techo = input("Ingrese el numero que identifica al tipo de techo: ")
+    numero_tipo_techo = input("Ingrese el número que identifica al tipo de techo: ")
 
     while numero_tipo_techo != "1" and numero_tipo_techo != "2":
         print("Opción inválida.")
         numero_tipo_techo = input("Ingrese nuevamente una opción: ")
-
+        
     if numero_tipo_techo == "1":
         tipo_techo = "Techada"
-
     elif numero_tipo_techo == "2":
         tipo_techo = "No techada"
-
     return tipo_techo
 
-
-
-
 def registrar_cancha(canchas):
-
     """
     Permite registrar una o más canchas en el sistema.
-
     Solicita el número de cancha, verifica que no esté registrado previamente,
     permite seleccionar el tipo de piso y techo, solicita el precio por hora
     y registra la cancha con estado Disponible.
-
     Parámetros:
         canchas: lista donde se almacenan las canchas registradas.
-
     Retorna:
         No retorna ningún valor. Modifica la lista canchas.
     """
@@ -103,19 +85,16 @@ def registrar_cancha(canchas):
 
         # numero de cancha
         numero = int(input("Ingrese el número de la cancha: "))
-
         existe = existe_cancha(canchas, numero)
        
         if existe:
             print("Ya existe una cancha con ese número.")
-
         else:
            #Llamando a la funcion de tipo de piso
            tipo_piso = elegir_tipo_piso()
 
            # Llamando a al funcion de tipos de techo
            tipo_techo = elegir_tipo_techo()
-
 
             # precio
            precio = float(input("Ingrese el precio por hora: "))
@@ -128,15 +107,11 @@ def registrar_cancha(canchas):
 
         opcion = input("¿Quiere registrar otra cancha? Ingresar 1 para SI y 2 para NO: ")
 
-
 def mostrar_canchas(canchas):
-
     """
     Muestra los datos de todas las canchas registradas.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
-
     Retorna:
         No retorna ningún valor. Muestra la información en pantalla.
     """
@@ -155,16 +130,12 @@ def mostrar_canchas(canchas):
             print("--------------------------")
 
 def buscar_cancha(canchas):
-
     """
     Permite buscar una cancha mediante su número.
-
     Muestra los números de las canchas registradas, solicita al usuario
     el número que desea buscar y, si existe, muestra todos sus datos.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
-
     Retorna:
         No retorna ningún valor. Muestra el resultado de la búsqueda en pantalla.
     """
@@ -196,16 +167,12 @@ def buscar_cancha(canchas):
         if encontrada == False:
             print("No existe una cancha con ese número.")
 
-
 def buscar_posicion_cancha(canchas, numero):
-
     """
     Busca la posición de una cancha dentro de la lista utilizando su número.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
         numero: número de cancha que se desea buscar.
-
     Retorna:
         La posición de la cancha si se encuentra registrada.
         Retorna -1 si la cancha no existe.
@@ -214,21 +181,16 @@ def buscar_posicion_cancha(canchas, numero):
     for i in range(len(canchas)):
         if canchas[i][0] == numero:
             return i
-
     return -1
 
 def elegir_estado():
-
     """
     Permite seleccionar el estado de una cancha.
-
     El usuario puede elegir entre Disponible y No disponible.
     La función valida que la opción ingresada sea correcta.
-
     Retorna:
         El estado seleccionado: Disponible o No disponible.
     """
-
     print("Opciones de estado:")
     print("1. Disponible")
     print("2. No disponible")
@@ -241,21 +203,16 @@ def elegir_estado():
 
     if opcion == "1":
         estado = "Disponible"
-
     elif opcion == "2":
         estado = "No disponible"
-
     return estado
 
 def mostrar_datos_cancha(cancha):
-
     """
     Muestra todos los datos correspondientes a una cancha.
-
     Parámetros:
         cancha: lista que contiene el número, tipo de piso, tipo de techo,
         precio por hora y estado de una cancha.
-
     Retorna:
         No retorna ningún valor. Muestra los datos en pantalla.
     """
@@ -267,17 +224,13 @@ def mostrar_datos_cancha(cancha):
     print("Estado:", cancha[4])
 
 def modificar_dato_cancha(canchas, pos):
-
     """
     Permite modificar un dato de una cancha determinada.
-
     El administrador puede modificar el tipo de piso, tipo de techo,
     precio por hora o estado de la cancha.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
         pos: posición de la cancha que se desea modificar.
-
     Retorna:
         No retorna ningún valor. Modifica directamente la cancha seleccionada.
     """
@@ -293,33 +246,24 @@ def modificar_dato_cancha(canchas, pos):
 
     if opcion == "1":
         canchas[pos][1] = elegir_tipo_piso()
-
     elif opcion == "2":
         canchas[pos][2] = elegir_tipo_techo()
-
     elif opcion == "3":
         canchas[pos][3] = float(input("Ingrese el nuevo precio por hora: "))
-
     elif opcion == "4":
         canchas[pos][4] = elegir_estado()
-
     elif opcion == "5":
         print("No se realizaron modificaciones.")
-
     else:
         print("Opción incorrecta.")
 
 def modificar_cancha(canchas):
-
     """
     Permite seleccionar una cancha registrada y modificar sus datos.
-
     Solicita el número de cancha, busca su posición, muestra sus datos actuales
     y permite seleccionar qué información se desea modificar.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
-
     Retorna:
         No retorna ningún valor. Puede modificar los datos de una cancha.
     """
@@ -338,26 +282,22 @@ def modificar_cancha(canchas):
         pos = buscar_posicion_cancha(canchas, numero_a_modificar)
 
         if pos == -1:
-            print("no existe una cancha con ese numero")
+            print("No existe una cancha con ese número")
 
         else:
-            print("\ndatos actuales de la cancha:")
+            print("\nDatos actuales de la cancha:")
 
             mostrar_datos_cancha(canchas[pos])
 
             modificar_dato_cancha(canchas, pos)
 
 def eliminar_cancha(canchas):
-
     """
     Permite eliminar una cancha registrada.
-
     Solicita el número de cancha, verifica que exista, muestra sus datos
     y pide confirmación antes de eliminarla.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
-
     Retorna:
         No retorna ningún valor. Puede eliminar una cancha de la lista.
     """
@@ -378,7 +318,6 @@ def eliminar_cancha(canchas):
 
         if pos == -1:
             print("No existe una cancha con ese número.")
-
         else:
             print("\nDatos de la cancha que desea eliminar:")
 
@@ -389,57 +328,24 @@ def eliminar_cancha(canchas):
             if opcion == "1":
                 del canchas[pos]
                 print("Cancha eliminada correctamente.")
-
             elif opcion == "2":
                 print("No se eliminó la cancha.")
-
             else:
                 print("Opción inválida.")
-    
 
 def mostrar_disponibilidad(canchas):
-
     """
     Muestra el estado de disponibilidad de todas las canchas registradas.
-
     Parámetros:
         canchas: lista que contiene las canchas registradas.
-
     Retorna:
         No retorna ningún valor. Muestra el número y estado de cada cancha.
     """
 
     if len(canchas) == 0:
         print("No hay canchas registradas.")
-
     else:
         print("\n--- DISPONIBILIDAD DE CANCHAS ---")
 
         for cancha in canchas:
             print("Cancha N°", cancha[0], "-", cancha[4])
-
-def main():
-
-    """
-    Función principal utilizada para iniciar y probar las funcionalidades
-    correspondientes a la gestión de canchas.
-
-    Crea la lista de canchas y llama a las funciones principales del módulo.
-
-    La uso solo para probar, despues de va a hacer un main general con un menu principal, etc.
-
-    Retorna:
-        No retorna ningún valor.
-    """
-
-    canchas=[]
-    registrar_cancha(canchas)
-    mostrar_canchas(canchas)
-    buscar_cancha(canchas)
-    modificar_cancha(canchas)
-    eliminar_cancha(canchas)
-    mostrar_disponibilidad(canchas)
-    print(canchas)
-
-
-main()
