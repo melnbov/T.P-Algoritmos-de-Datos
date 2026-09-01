@@ -28,18 +28,17 @@ def elegir_tipo_piso():
     
     numero_tipo_piso = input("Ingrese el número que identifica al tipo de piso: ")
     
-    while numero_tipo_piso != "1" and numero_tipo_piso != "2" and numero_tipo_piso != "3":
+    while numero_tipo_piso not in ["1", "2", "3"]:
         print("Opción inválida.")
         numero_tipo_piso = input("Ingrese nuevamente una opción: ")
     
-    if numero_tipo_piso == "1":
-        tipo_piso = "Cemento"
-    
-    elif numero_tipo_piso == "2":
-        tipo_piso = "Cesped sintético"
-    
-    elif numero_tipo_piso == "3":
-        tipo_piso = "Resina"
+    match numero_tipo_piso:
+        case "1":
+            tipo_piso = "Cemento"
+        case "2":
+            tipo_piso = "Cesped sintetico"
+        case "3":
+            tipo_piso = "Resina"
 
     return tipo_piso
 
@@ -57,14 +56,17 @@ def elegir_tipo_techo():
 
     numero_tipo_techo = input("Ingrese el número que identifica al tipo de techo: ")
 
-    while numero_tipo_techo != "1" and numero_tipo_techo != "2":
+    while numero_tipo_techo not in ["1", "2"]:
         print("Opción inválida.")
         numero_tipo_techo = input("Ingrese nuevamente una opción: ")
         
-    if numero_tipo_techo == "1":
-        tipo_techo = "Techada"
-    elif numero_tipo_techo == "2":
-        tipo_techo = "No techada"
+    match numero_tipo_techo:
+        case "1":
+            tipo_techo = "Techada"
+
+        case "2":
+            tipo_techo = "No techada"
+
     return tipo_techo
 
 def registrar_cancha(canchas):
@@ -119,9 +121,13 @@ def mostrar_canchas(canchas):
     if len(canchas) == 0:
         print("No hay canchas registradas.")
     else:
-        print("\n--- CANCHAS REGISTRADAS ---")
 
-        for cancha in canchas:
+        canchas_ordenadas = canchas.copy() #uso copy para no modificar la lista original, sino que crearme una copia para modificar
+
+        canchas_ordenadas.sort(key=lambda cancha: cancha[0])
+
+        print("\n--- CANCHAS REGISTRADAS ---")
+        for cancha in canchas_ordenadas:
             print("Número de cancha:", cancha[0])
             print("Tipo de piso:", cancha[1])
             print("Tipo de techo:", cancha[2])
@@ -201,11 +207,12 @@ def elegir_estado():
         print("Opción inválida.")
         opcion = input("Ingrese nuevamente una opción: ")
 
-    if opcion == "1":
-        estado = "Disponible"
-    elif opcion == "2":
-        estado = "No disponible"
-    return estado
+    match opcion:
+        case "1":
+            estado = "Disponible"
+        case "2":
+            estado = "No disponible"
+
 
 def mostrar_datos_cancha(cancha):
     """
@@ -244,18 +251,19 @@ def modificar_dato_cancha(canchas, pos):
 
     opcion = input("Ingrese una opción: ")
 
-    if opcion == "1":
-        canchas[pos][1] = elegir_tipo_piso()
-    elif opcion == "2":
-        canchas[pos][2] = elegir_tipo_techo()
-    elif opcion == "3":
-        canchas[pos][3] = float(input("Ingrese el nuevo precio por hora: "))
-    elif opcion == "4":
-        canchas[pos][4] = elegir_estado()
-    elif opcion == "5":
-        print("No se realizaron modificaciones.")
-    else:
-        print("Opción incorrecta.")
+    match opcion:
+        case "1":
+            canchas[pos][1] = elegir_tipo_piso()
+        case "2":
+            canchas[pos][2] = elegir_tipo_techo()
+        case "3":
+            canchas[pos][3] = float(input("Ingrese el nuevo precio por hora: "))
+        case "4":
+            canchas[pos][4] = elegir_estado()
+        case "5":
+            print("No se realizaron modificaciones.")
+        case _:
+            print("Opción incorrecta.")
 
 def modificar_cancha(canchas):
     """
@@ -333,19 +341,67 @@ def eliminar_cancha(canchas):
             else:
                 print("Opción inválida.")
 
-def mostrar_disponibilidad(canchas):
+def obtener_canchas_disponibles(canchas):
+
     """
-    Muestra el estado de disponibilidad de todas las canchas registradas.
+    Obtiene las canchas que se encuentran disponibles.
     Parámetros:
         canchas: lista que contiene las canchas registradas.
     Retorna:
-        No retorna ningún valor. Muestra el número y estado de cada cancha.
+        Una lista con las canchas cuyo estado es Disponible.
+    """
+
+    disponibles = list(filter(lambda cancha: cancha[4] == "Disponible", canchas)) #va tomando cada cancha de canchas y pregunta:¿esta disponible? Si da True, la conserva. Si da False, no la incluye.
+
+    return disponibles
+
+def mostrar_disponibilidad(canchas):
+
+    """
+    Muestra las canchas que se encuentran disponibles.
+    Parámetros:
+        canchas: lista que contiene las canchas registradas.
+    Retorna:
+        No retorna ningún valor. Muestra las canchas disponibles.
     """
 
     if len(canchas) == 0:
         print("No hay canchas registradas.")
-    else:
-        print("\n--- DISPONIBILIDAD DE CANCHAS ---")
 
-        for cancha in canchas:
-            print("Cancha N°", cancha[0], "-", cancha[4])
+    else:
+        disponibles = obtener_canchas_disponibles(canchas)
+
+        if len(disponibles) == 0:
+            print("No hay canchas disponibles.")
+
+        else:
+            print("\n--- CANCHAS DISPONIBLES ---")
+
+            for cancha in disponibles:
+                print("Cancha N°", cancha[0])
+
+
+def aumentar_precios(canchas, porcentaje):
+
+    """
+    Aumenta el precio por hora de todas las canchas registradas.
+    Aplica el porcentaje de aumento indicado a cada cancha utilizando
+    las funciones map() y lambda, y genera una nueva lista con los
+    precios actualizados.
+    Parámetros:
+        canchas: lista que contiene las canchas registradas.
+        porcentaje: porcentaje que se desea aumentar a los precios.
+    Retorna:
+        Una nueva lista de canchas con los precios actualizados.
+    """
+
+    canchas_actualizadas = list(map(
+        lambda cancha: [cancha[0],
+                        cancha[1],
+                        cancha[2],
+                        cancha[3] * (1 + porcentaje / 100),
+                        cancha[4]],
+        canchas
+    ))
+
+    return canchas_actualizadas
