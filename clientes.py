@@ -26,8 +26,8 @@ def validar_nombre(nombre):
 
 def registrar_clientes(clientes):
     nombre = input ("Ingrese su nombre:")
-    dni = input("Ingrese su dni:")
-    telefono = input("ingrese su numero de telefono:")
+    dni = input("Ingrese su DNI:")
+    telefono = input("Ingrese su número de teléfono:")
 
     while not validar_nombre(nombre):
         print ("nombre invalido")
@@ -52,14 +52,14 @@ def registrar_clientes(clientes):
     ]
 
     clientes.append(nuevo_cliente)
-    print ("cliente registrado correctamente")
+    print ("Cliente registrado correctamente")
 
 def iniciar_sesion_cliente(clientes):
-    dni = input("ingrese su dni:")
+    dni = input("Ingrese su dni:")
     for cliente in clientes:
         if cliente[1] == dni:
-            print("inicio de sesion exitoso")
-            print("bienvenido/a", cliente[0])
+            print("Inicio de sesión exitoso")
+            print("Bienvenido/a: ", cliente[0])
             return cliente
-    print("no existe un cliente registrado con este dni")
+    print("No existe un cliente registrado con este DNI")
     return None
