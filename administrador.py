@@ -5,7 +5,13 @@ administrador = [
     "42456789",
     "admin123"
 ]
+
 def iniciar_sesion_admin(administrador):
+    """
+    Permite iniciar sesión a un administrador verificando su DNI y contraseña.
+    Parámetros: administrador: Lista que contiene los datos del administrador: nombre, DNI y contraseña.
+    Retorna: True si el DNI y la contraseña son correctos. False si alguno de los datos ingresados es incorrecto.
+    """
     dni = input("Ingrese su DNI:")
     contraseña = input("Ingrese su contraseña:")
     if dni ==administrador[1] and contraseña == administrador[2]:
@@ -142,9 +148,7 @@ def reservas_por_cliente(reservas, clientes):
     print("--------------------")
     
     for cliente in clientes:
-        reservas_cliente = list(
-            filter(lambda reserva: reserva[1] == cliente[1], reservas)
-        )
+        reservas_cliente = list(filter(lambda reserva: reserva[1] == cliente[1], reservas))
 
         cantidad = len(reservas_cliente)
 

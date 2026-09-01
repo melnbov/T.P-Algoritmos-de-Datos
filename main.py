@@ -15,13 +15,13 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
     """
     #dias para alquilar la cancha
     dias=[ 
-        "28/08/2026",
-        "29/08/2026",
-        "30/08/2026",
-        "31/08/2026",
-        "01/09/2026",
-        "02/09/2026",
-        "03/09/2026"
+        "01/10/2026",
+        "02/10/2026",
+        "03/10/2026",
+        "04/10/2026",
+        "05/10/2026",
+        "06/10/2026",
+        "07/10/2026"
     ]
     opcion=0
     while opcion!=5:
@@ -60,7 +60,7 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
     """
         
     opcion=0
-    while opcion !=9:
+    while opcion !=10:
         print("\n=====Menú Administrador========")
         print("1. Registrar cancha")
         print("2. Consultar canchas")
@@ -70,7 +70,8 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         print("6. Buscar reservas por cliente")
         print("7. Buscar reservas por cancha")
         print("8. Generar reporte")
-        print("9. Cerrar sesión")
+        print("9. Aumentar precios")
+        print("10. Cerrar sesión")
         print("=================================")
             
         opcion=int(input("Ingrese una opción: "))
@@ -90,10 +91,15 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
             administrador.buscar_reservas_cancha(lista_reservas, lista_canchas)
         elif opcion == 8:
            administrador.generar_reporte(lista_reservas, lista_clientes, lista_canchas)
-        elif opcion == 9:
+        elif opcion==9:
+            porcentaje = float(input("Ingrese el porcentaje de aumento sin %: "))
+            lista_canchas=canchas.aumentar_precios(lista_canchas, porcentaje)
+            print("\n¡¡Precios actualizados correctamente!!")
+        elif opcion == 10:
             print("\nSesión cerrada")
         else:
             print("\nOpción inválida")
+    return lista_canchas
                 
 def main():
     """
@@ -154,7 +160,7 @@ def main():
         elif opcion == 2: 
             acceso_correcto=administrador.iniciar_sesion_admin(datos_administrador)
             if acceso_correcto:
-                menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista_reservas)
+                lista_canchas=menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista_reservas)
         elif opcion == 3:
             print("\n¡¡Gracias por utilizar nuestro sistema!!")
         else:

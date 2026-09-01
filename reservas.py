@@ -175,7 +175,6 @@ def cancelar_reserva(reservas, cliente):
         if (cliente[1] == reserva[1] and num_cancha == reserva[0] and fecha == reserva[2] and horario_entrada == reserva[3]):
             reservas.remove(reserva)
             print("Reserva cancelada correctamente.")
-
             encontrada = True
             break
 
