@@ -1,3 +1,5 @@
+import re
+
 def es_numero(texto):
     """Si los numeros ingresados son menores a 0 o mayores que 9 el dni es invalido"""
     for caracter in texto:
@@ -6,12 +8,14 @@ def es_numero(texto):
     return True
 
 def validar_dni(dni):
-    if len(dni) == 8 and es_numero(dni):
+    patron = r"^\d{8}$"
+    if re.match(patron,dni):
         return True
-    return  False
+    return False
 
 def  validar_telefono(telefono):
-    if len(telefono) >= 8 and es_numero(telefono):
+    patron = r"^\d{8,}$"
+    if re.match(patron, telefono):
         return True
     return False
 
@@ -26,24 +30,20 @@ def registrar_clientes(clientes):
     telefono = input("Ingrese su número de teléfono:")
 
     while not validar_nombre(nombre):
-        print ("Nombre inválido")
-        nombre = input("Ingrese nuevamente su nombre:")
-        return
+        print ("nombre invalido")
+        nombre = input("ingrese nuevamente su nombre:")
 
     while not validar_telefono (telefono):
-        print ("Teléfono inválido")
-        telefono = input("Ingrese nuevamente su teléfono:")
-        return
+        print ("telefono invalido")
+        telefono = input("ingrese nuevamente su telefono:")
 
     while not validar_dni (dni):
-        print("DNI inválido")
-        dni = input("Ingrese nuevamente su DNI:")
-        return
+        print("dni invalido")
+        dni = input("ingrese nuevamente su dni:")
 
     for cliente in clientes:
         if cliente [1] == dni:
-            print ("Ya existe un cliente con ese DNI ")
-            return
+            print ("Ya existe un cliente con ese dni ")
 
     nuevo_cliente = [
         nombre,

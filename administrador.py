@@ -1,4 +1,6 @@
-administador = [
+from functools import reduce
+
+administrador = [
     "administrador",
     "42456789",
     "admin123"
@@ -6,9 +8,9 @@ administador = [
 def iniciar_sesion_admin(administrador):
     dni = input("Ingrese su DNI:")
     contraseña = input("Ingrese su contraseña:")
-    if dni ==administador[1] and contraseña == administador[2]:
+    if dni ==administrador[1] and contraseña == administrador[2]:
         print("¡¡¡Inicio de sesión exitoso!!!")
-        print ("Bienvenido: ", administador[0])
+        print ("Bienvenido: ", administrador[0])
         return True
     print("El DNI y la contraseña son incorrectos")
     return False
@@ -117,9 +119,8 @@ def calcular_recaudacion(reservas):
     """
     Calcula la recaudación total de todas las reservas.
     """
-    recaudacion=0
-    for reserva in reservas:
-        recaudacion+= reserva[5]
+    precios = [reserva[5] for reserva in reservas]
+    recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
     return recaudacion
 
 def cantidad_reservas(reservas):
@@ -141,11 +142,11 @@ def reservas_por_cliente(reservas, clientes):
     print("--------------------")
     
     for cliente in clientes:
-        cantidad=0
-        
-        for reserva in reservas:
-            if reserva[1]==cliente[1]:
-                cantidad+=1
+        reservas_cliente = list(
+            filter(lambda reserva: reserva[1] == cliente[1], reservas)
+        )
+
+        cantidad = len(reservas_cliente)
 
         print("Cliente: ", cliente[0])
         print("DNI: ", cliente[1])
@@ -208,3 +209,4 @@ def generar_reporte(reservas, clientes, canchas):
     
     print("Cancha mas reservada:")
     cancha_mas_reservada(reservas, canchas)
+
