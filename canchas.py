@@ -120,7 +120,7 @@ def mostrar_canchas(canchas):
 
         canchas_ordenadas = canchas.copy() #uso copy para no modificar la lista original, sino que crearme una copia para modificar
 
-        canchas_ordenadas.sort(key=lambda cancha: cancha[0])
+        canchas_ordenadas.sort()
 
         print("\n--- CANCHAS REGISTRADAS ---")
         for cancha in canchas_ordenadas:

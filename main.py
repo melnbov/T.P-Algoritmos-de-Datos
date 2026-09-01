@@ -40,7 +40,7 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
         elif opcion==2:
             reservas.crear_reserva(lista_canchas, lista_reservas, dias, cliente_actual)
         elif opcion==3:
-            reservas.mostrar_reserva(lista_reservas)
+            reservas.mostrar_reserva(lista_reservas,cliente_actual)
         elif opcion==4:
             reservas.cancelar_reserva(lista_reservas, cliente_actual)
         elif opcion==5:
