@@ -199,26 +199,6 @@ def mostrar_reserva(reservas, cliente):
 
             print("-------------------------------- ")
 
-def buscar_reserva(reservas):
-    """Permite buscar una reserva segun el numero de cancha 
-        Parámetros:reservas: lista que contiene las reservas realizadas.
-        Retorna: No retorna ningún valor. Muestra la reserva encontrada
-        o informa si no existe. 
-    """
-    num_cancha=int(input("Ingrese el numero de cancha que desea buscar: "))
-
-    for reserva in reservas:
-        if num_cancha == reserva[0]:
-            print("\n================================")
-            print(" RESERVA REALIZADA")
-            print("================================")
-            print("Cancha:", reserva[0])
-            print("DNI:", reserva[1])
-            print("Fecha:", reserva[2])
-            print("Horario:", reserva[3], "-", reserva[4])
-            print("Precio total: $", reserva[5])    
-            return
-    print("No existe una reserva para esa cancha.")
 
 def cancelar_reserva(reservas, cliente):
     """Se cancela una reserva, ingresando numero de cancha, fecha y horario porque como se puede hacer varias

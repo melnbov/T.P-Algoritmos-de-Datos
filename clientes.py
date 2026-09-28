@@ -36,7 +36,7 @@ def validar_nombre(nombre):
     Retorna:True si el nombre tiene 3 o más caracteres y contiene únicamente letras y espacios.
     False si no cumple con estas condiciones.
     """
-    patron = r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$"
+    patron = r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$"
 
     if len(nombre) >= 3 and re.match(patron, nombre):
         return True
