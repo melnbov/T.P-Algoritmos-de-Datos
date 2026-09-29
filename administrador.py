@@ -1,16 +1,16 @@
 from functools import reduce
 
-administrador = [
-    "administrador",
-    "42456789",
-    "admin123"
-]
+administrador = {
+    "nombre": "administrador",
+    "dni": "42456789",
+    "contraseña": "admin123"
+}
 def iniciar_sesion_admin(administrador):
     dni = input("Ingrese su DNI:")
     contraseña = input("Ingrese su contraseña:")
-    if dni ==administrador[1] and contraseña == administrador[2]:
+    if dni ==administrador["dni"] and contraseña == administrador["contraseña"]:
         print("¡¡¡Inicio de sesión exitoso!!!")
-        print ("Bienvenido: ", administrador[0])
+        print ("Bienvenido: ", administrador["nombre"])
         return True
     print("El DNI y la contraseña son incorrectos")
     return False
@@ -33,8 +33,8 @@ def mostrar_todas_reservas(reservas, clientes):
         nombre_cliente="Desconocido"
         
         for cliente in clientes:
-            if cliente[1]== reserva[1]:
-                nombre_cliente=cliente[0]
+            if cliente["dni"]== reserva[1]:
+                nombre_cliente=cliente["nombre"]
                 break
         
         print("Cliente: ", nombre_cliente)
@@ -58,8 +58,8 @@ def buscar_reservas_clientes(reservas, clientes):
     nombre_cliente="Desconocido"
     
     for cliente in clientes:
-        if cliente[1]==dni:
-            nombre_cliente= cliente[0]
+        if cliente["dni"]==dni:
+            nombre_cliente= cliente["nombre"]
             break
     
     print("---------------------")
@@ -143,13 +143,13 @@ def reservas_por_cliente(reservas, clientes):
     
     for cliente in clientes:
         reservas_cliente = list(
-            filter(lambda reserva: reserva[1] == cliente[1], reservas)
+            filter(lambda reserva: reserva[1] == cliente["dni"], reservas)
         )
 
         cantidad = len(reservas_cliente)
 
-        print("Cliente: ", cliente[0])
-        print("DNI: ", cliente[1])
+        print("Cliente: ", cliente["nombre"])
+        print("DNI: ", cliente["dni"])
         print("Cantidad de reservas: ", cantidad)
         
 def cancha_mas_reservada(reservas, canchas):
