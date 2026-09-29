@@ -129,6 +129,21 @@ def calcular_recaudacion(reservas):
     recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
     return recaudacion
 
+def recaudacion_por_cancha(reservas):
+    """ 
+    Calcular cuánto dinero recaudó cada cancha
+    """
+    recaudacion={}
+    for reserva in reservas:
+        numero_cancha=reserva[0]
+        precio=reserva[5]
+        
+        if numero_cancha not in recaudacion:
+            recaudacion[numero_cancha]=0
+            
+        recaudacion[numero_cancha]+=precio
+    return recaudacion
+
 def cantidad_reservas(reservas):
     """
     Retorna la cantidad total de reservas registradas.
@@ -143,6 +158,10 @@ def reservas_por_cliente(reservas, clientes):
         print("No hay clientes registrados")
         return
     
+    dnis_con_reservas=set()
+    for reserva in reservas:
+        dnis_con_reservas.add(reserva[1])
+        
     print("--------------------")
     print("Reservas por cliente")
     print("--------------------")
@@ -155,6 +174,7 @@ def reservas_por_cliente(reservas, clientes):
         print("Cliente: ", cliente[0])
         print("DNI: ", cliente[1])
         print("Cantidad de reservas: ", cantidad)
+    print("Calcular de clientes con reservas: ", len(dnis_con_reservas))
         
 def cancha_mas_reservada(reservas, canchas):
     """
@@ -164,7 +184,7 @@ def cancha_mas_reservada(reservas, canchas):
     if len(reservas)==0:
         print("No hay reservas registradas")
         return None
-    
+
     if len(canchas)==0:
         print("No hay canchas registradas")
         return None
@@ -208,9 +228,16 @@ def generar_reporte(reservas, clientes, canchas):
     print("Cantidad total de reservas: ", cantidad_reservas(reservas))
     print("Recaudación total: $ ", calcular_recaudacion(reservas))
     
-    print("Reservas por cliente:")
+    print("\nReservas por cliente:")
     reservas_por_cliente(reservas, clientes)
     
-    print("Cancha mas reservada:")
+    print("\nCancha mas reservada:")
     cancha_mas_reservada(reservas, canchas)
+    
+    print("\nRecaudación por cancha: ")
+    recaudacion=recaudacion_por_cancha(reservas)
+    
+    for cancha in recaudacion:
+        print("Cancha: ", cancha, "-Recaudacioón: $", recaudacion[cancha])
+        
 
