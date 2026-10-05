@@ -83,31 +83,64 @@ def registrar_cancha(canchas):
      
     opcion = input("¿Quiere registrar una cancha? Ingresar 1 para SI y 2 para NO: ")
 
-    while opcion != "2":
+    while opcion !="2" and opcion !="1":
+        opcion = input("Opcion invalida, ingrese 1 para SI y 2 para NO")
+
+
+    while opcion == "1":
 
         # numero de cancha
-        numero = int(input("Ingrese el número de la cancha: "))
-        existe = existe_cancha(canchas, numero)
-       
-        if existe:
-            print("Ya existe una cancha con ese número.")
-        else:
-           #Llamando a la funcion de tipo de piso
-           tipo_piso = elegir_tipo_piso()
+        numero_valido = False
 
-           # Llamando a al funcion de tipos de techo
-           tipo_techo = elegir_tipo_techo()
+        while not numero_valido:
+            try:
+                numero = int(input("Ingrese un número del 1 al 20 para identificar la cancha: "))
 
-            # precio
-           precio = float(input("Ingrese el precio por hora: "))
+                if numero < 1 or numero > 20:
+                    print("Número inválido. Debe estar entre 1 y 20.")
 
-           nueva_cancha = [numero, tipo_piso, tipo_techo, precio, "Disponible"]
+                else:
+                    existe = existe_cancha(canchas, numero)
 
-           canchas.append(nueva_cancha)
+                    if existe:
+                        print("Ya existe una cancha con ese número de identificación. Ingrese otro.")
+                    else:
+                        numero_valido = True
 
-           print("Cancha registrada correctamente.")
+            except ValueError:
+                print("Entrada inválida. Debe ingresar un número entero.")
+
+
+        
+        #Llamando a la funcion de tipo de piso
+        tipo_piso = elegir_tipo_piso()
+
+        # Llamando a al funcion de tipos de techo
+        tipo_techo = elegir_tipo_techo()
+
+        # precio
+        precio_valido = False
+
+        while not precio_valido:
+            try:
+                precio = float(input("Ingrese el precio por hora: "))
+
+                if precio > 0:
+                    precio_valido = True
+                else:
+                    print("El precio debe ser mayor que cero.")
+
+            except ValueError:
+                print("Entrada inválida. Debe ingresar un precio numérico.")
+
+        nueva_cancha = [numero, tipo_piso, tipo_techo, precio, "Disponible"]
+        canchas.append(nueva_cancha)
+
+        print("Cancha registrada correctamente.")
 
         opcion = input("¿Quiere registrar otra cancha? Ingresar 1 para SI y 2 para NO: ")
+
+    
 
 def mostrar_canchas(canchas):
     """
