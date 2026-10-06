@@ -43,6 +43,40 @@ def validar_nombre(nombre):
 
     return False
 
+def pedir_dato(mensaje, validador, mensaje_error):
+    """ Pide un dato por teclado y lo vuelve a pedir hasta que sea valido.
+    Si el dato no pasa la validacion, lanza una excepcion ValueError y la captura para mostrar el mensaje de error al usuario.
+    Parametros: mensaje: texto que se muestra al pedir el dato.
+    validador: funcion que recibe el dato y retorna True si es valido.
+    mensaje_error: texto que se muestra si el dato es invalido.
+    Retorna: el dato ingresado ya validado"""
+
+    while True:
+        try:
+            dato = input(mensaje)
+            if not validador(dato):
+                raise ValueError(mensaje_error)
+            return dato
+        except ValueError as error:
+            print(error)
+
+def pedir_dni_nuevo(clientes):
+    """ Pide un DNI y lo vuelve a pedir hasta que tenga formato valido y no este registrado. Usa excepciones ValueError para ambos casos.
+    Parametros: clientes: lista que contiene diccionarios con los datos de los clientes registrados.
+    Retorna: un DNI de 8 digitos que no existe en la lista de clientes. """
+
+    while True:
+        try: 
+            dni = input("Ingrese su DNI: ")
+            if not validar_dni(dni):
+                raise ValueError("DNI invalido: deben ser 8 digitos numericos")
+            for cliente in clientes:
+                if cliente["dni"] == dni:
+                    raise ValueError("Ya existe un cliente con ese DNI")
+            return dni
+        except ValueError as error:
+            print(error)
+
 def registrar_clientes(clientes):
     """ Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI y número de teléfono del cliente. 
     Los datos son validados antes de realizar el registro. 
@@ -51,31 +85,6 @@ def registrar_clientes(clientes):
     nombre = input ("Ingrese su nombre:")
     dni = input("Ingrese su DNI:")
     telefono = input("Ingrese su número de teléfono:")
-
-    while not validar_nombre(nombre):
-        print ("Nombre invalido")
-        nombre = input("Ingrese nuevamente su nombre:")
-
-    while not validar_telefono(telefono):
-        print ("Teléfono inválido")
-        telefono = input("Ingrese nuevamente su teléfono:")
-
-    while not validar_dni (dni):
-        print("DNI inválido")
-        dni = input("Ingrese nuevamente su DNI:")
-
-    dni_existente=True
-    while dni_existente:
-        dni_existente=False
-        for cliente in clientes:
-            if cliente ["dni"] == dni:
-                print ("Ya existe un cliente con ese DNI ")
-                dni=input("Ingrese otro DNI: ")
-                
-                while not validar_dni(dni):
-                    print("DNI inválido")
-                    dni=input("Ingrese nuevamente su DNI: ")
-                dni_existente=True
 
     nuevo_cliente = {
     "nombre": nombre,
