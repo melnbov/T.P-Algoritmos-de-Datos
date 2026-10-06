@@ -82,9 +82,9 @@ def registrar_clientes(clientes):
     Los datos son validados antes de realizar el registro. 
     Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
     Retorna: No retorna ningún valor. Agrega el nuevo cliente a la lista recibida como parámetro. """
-    nombre = input ("Ingrese su nombre:")
-    dni = input("Ingrese su DNI:")
-    telefono = input("Ingrese su número de teléfono:")
+    nombre = pedir_dato ("Ingrese su nombre:", validar_nombre, "Nombre invalido: minimo 3 letras, sin numeros ni simbolos")
+    dni = pedir_dni_nuevo (clientes)
+    telefono = pedir_dato("Ingrese su número de teléfono:", validar_telefono, "Telefono invalido: minimo 8 digitos numericos")
 
     nuevo_cliente = {
     "nombre": nombre,
