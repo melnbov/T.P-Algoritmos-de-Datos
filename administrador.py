@@ -125,24 +125,32 @@ def calcular_recaudacion(reservas):
     """
     Calcula la recaudación total de todas las reservas.
     """
-    precios = [reserva[5] for reserva in reservas]
-    recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
-    return recaudacion
+    try:
+        precios = [reserva[5] for reserva in reservas]
+        recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
+        return recaudacion
+    except:
+        print("Error al calcular la recaudación")
+        return 0
 
 def recaudacion_por_cancha(reservas):
     """ 
     Calcular cuánto dinero recaudó cada cancha
     """
-    recaudacion={}
-    for reserva in reservas:
-        numero_cancha=reserva[0]
-        precio=reserva[5]
+    try:
+        recaudacion={}
+        for reserva in reservas:
+            numero_cancha=reserva[0]
+            precio=reserva[5]
         
-        if numero_cancha not in recaudacion:
-            recaudacion[numero_cancha]=0
+            if numero_cancha not in recaudacion:
+                recaudacion[numero_cancha]=0
             
-        recaudacion[numero_cancha]+=precio
-    return recaudacion
+            recaudacion[numero_cancha]+=precio
+        return recaudacion
+    except:
+        print("No se pudo calcular la recaudación por cancha")
+        return {}
 
 def cantidad_reservas(reservas):
     """

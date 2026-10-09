@@ -33,7 +33,11 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
         print("5. Cerrar sesión")
         print("--------------------------")
         
-        opcion=int(input("Ingrese una opción: "))
+        try:
+            opcion=int(input("Ingrese una opción: "))
+        except:
+            print("Debe ingresar un número")
+            opcion=0
         
         if opcion== 1: 
             canchas.mostrar_canchas(lista_canchas)
@@ -74,7 +78,12 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         print("10. Cerrar sesión")
         print("=================================")
             
-        opcion=int(input("Ingrese una opción: "))
+        try:
+            opcion=int(input("Ingrese una opción: "))
+        except:
+            print("Debe ingresar un número")
+            opcion=0
+            
         if opcion == 1:
             canchas.registrar_cancha(lista_canchas)
         elif opcion == 2:
@@ -92,9 +101,12 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         elif opcion == 8:
            administrador.generar_reporte(lista_reservas, lista_clientes, lista_canchas)
         elif opcion==9:
-            porcentaje = float(input("Ingrese el porcentaje de aumento sin %: "))
-            lista_canchas=canchas.aumentar_precios(lista_canchas, porcentaje)
-            print("\n¡¡Precios actualizados correctamente!!")
+            try:
+                porcentaje = float(input("Ingrese el porcentaje de aumento sin %: "))
+                lista_canchas=canchas.aumentar_precios(lista_canchas, porcentaje)
+                print("\n¡¡Precios actualizados correctamente!!")
+            except ValueError:
+                print("Debe ingresar un porcentaje válido")
         elif opcion == 10:
             print("\nSesión cerrada")
         else:
@@ -133,7 +145,11 @@ def main():
         print("3. Salir")
         print("================================")
         
-        opcion=int(input("Ingrese una opcion: "))
+        try:
+            opcion=int(input("Ingrese una opción: "))
+        except:
+            print("Debe ingresar un número")
+            opcion=0
         
         if opcion == 1: 
             opcion_cliente=0
@@ -144,8 +160,12 @@ def main():
                 print("3. Volver")
                 print("-------------------")
                 
-                opcion_cliente= int(input("Ingrese una opción: "))
-                
+                try:
+                    opcion_cliente= int(input("Ingrese una opción: "))
+                except:
+                    print("Debe ingresar un número")
+                    opcion_cliente=0
+                    
                 if opcion_cliente == 1:
                     clientes.registrar_clientes(lista_clientes)
                 elif opcion_cliente == 2:
