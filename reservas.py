@@ -100,7 +100,7 @@ def calcular_precio(horario_entrada,horario_salida,precio_hora):
         precio_hora: precio de la cancha por una hora.
         Retorna:El precio total de la reserva. 
     """
-    precio_total =  (horario_salida - horario_entrada) * precio_hora
+    precio_total = (horario_salida - horario_entrada) * precio_hora
 
     return precio_total
 
@@ -139,11 +139,17 @@ def crear_reserva(canchas, reservas, dias, cliente):
     # Mostrar canchas
     mostrar_canchas(canchas)
     # Seleccionar cancha
-    num_cancha = int(input("\nIngrese el número de cancha: "))
-
-    while verificar_numero_cancha(num_cancha,canchas) == False:
-        print("Ese número de cancha no existe.")
-        num_cancha = int(input("Ingrese nuevamente el número de cancha: "))
+    while True:
+        try:
+            num_cancha = int(input("\nIngrese el número de cancha: "))
+            if num_cancha == 0:
+                print("Reserva cancelada.")
+                return
+            if verificar_numero_cancha(num_cancha,canchas):
+                break
+            print("Ese numero de cancha no existe.")
+        except ValueError:
+            print("Debe ingresa un numero entero valido")
 
     # Seleccionar horario
     horario_entrada, horario_salida = seleccionar_horario()
@@ -211,21 +217,24 @@ def cancelar_reserva(reservas, cliente):
 
     mostrar_reserva(reservas,cliente)
 
-    num_cancha = int(input("Ingrese el número de cancha: "))
-    fecha = input("Ingrese la fecha de la reserva: ")
-    horario_entrada = int(input("Ingrese el horario de entrada: "))
-
-    encontrada = False
+    try:
+        num_cancha = int(input("Ingrese el número de cancha (0 para salir): "))
+        if num_cancha == 0:
+            print("Operacion cancelada.")
+            return
+        fecha = input("Ingrese la fecha de la reserva: ")
+        horario_entrada = int(input("Ingrese el horario de entrada: "))
+    except ValueError:
+        print("Dato invalido. Operacion cancelada.")
+        return
 
     for reserva in reservas:
         if (cliente[1] == reserva[1] and num_cancha == reserva[0] and fecha == reserva[2] and horario_entrada == reserva[3]):
             reservas.remove(reserva)
             print("Reserva cancelada correctamente.")
-            encontrada = True
-            break
+            return
 
-    if not encontrada:
-        print("No se encontró una reserva con esos datos.")
+    print("No se encontró una reserva con esos datos.")
     
             
 
