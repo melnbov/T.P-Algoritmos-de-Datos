@@ -13,16 +13,6 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
     lista_canchas: matriz que contiene las canchas registradas.
     lista_reservas: matriz que contiene las reservas registradas.
     """
-    #dias para alquilar la cancha
-    dias=[ 
-        "01/10/2026",
-        "02/10/2026",
-        "03/10/2026",
-        "04/10/2026",
-        "05/10/2026",
-        "06/10/2026",
-        "07/10/2026"
-    ]
     opcion=0
     while opcion!=5:
         print("\n=====Menú Cliente=====")
@@ -38,7 +28,7 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
         if opcion== 1: 
             canchas.mostrar_canchas(lista_canchas)
         elif opcion==2:
-            reservas.crear_reserva(lista_canchas, lista_reservas, dias, cliente_actual)
+            reservas.crear_reserva(lista_canchas, lista_reservas, cliente_actual)
         elif opcion==3:
             reservas.mostrar_reserva(lista_reservas,cliente_actual)
         elif opcion==4:

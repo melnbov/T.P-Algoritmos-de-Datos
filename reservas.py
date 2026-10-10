@@ -1,4 +1,7 @@
 from canchas import mostrar_canchas
+from datetime import date, timedelta
+
+DIAS_SEMANA=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
 
 def verificar_numero_cancha(buscado,canchas):
     """Verifica si existe una cancha con el numero ingresado por el usuario
@@ -23,22 +26,42 @@ def obtener_precio_cancha(canchas,num_cancha):
         if cancha[0] == num_cancha:
             return cancha[3]
 
+def generar_dias(cantidad):
+    """Genera la lista de días disponibles para realizar reservas.
+    Parte desde la fecha actual y avanza día por día, omitiendo los domingos,
+    hasta completar la cantidad pedida. Así la lista se actualiza sola cada día.
+    Parámetros:
+        cantidad: cantidad de días que se desean generar.
+    Retorna: lista de fechas de lunes a sábado.
+    """
+    dias=[]
+    dia=date.today()
+    while len(dias) < cantidad:
+        if dia.weekday() != 6:
+            dias.append(dia)
+        dia += timedelta(days=1)
+    return dias
+
 def seleccionar_dia(dias):
-    """Permite al usuario seleccionar el dia en el que desea realizar la reserva
-        Parámetros:
-        dias: lista de días disponibles para realizar reservas.
-        Retorna:El día seleccionado por el usuario.
+    """Permite al usuario seleccionar el día en el que desea realizar la reserva.
+    Muestra los días numerados junto con el nombre del día de la semana, y pide
+    una opción hasta que el usuario ingrese un número válido.
+    Parámetros:
+        dias: lista de fechas (objetos date) disponibles para reservar.
+    Retorna: la fecha (objeto date) seleccionada por el usuario.
     """
     print("Seleccione el día: ")
-    for i in range(len(dias)):
-        print(i+1,"-",dias[i])
-
-    opcion=int(input("Ingrese una opcion: "))
-
-    while opcion < 1 or opcion > len(dias):
-        print("La opción ingresada no es valida. ")
-        opcion=int(input("Ingrese nuevamente una opción: "))
-    return dias[opcion-1]
+    for i,dia in enumerate(dias, start=1):
+        nombre_dia=DIAS_SEMANA[dia.weekday()]
+        print(f"{i} - {nombre_dia} {dia.strftime('%d/%m/%Y')}")
+    while True:
+        try:
+            opcion=int(input("Ingrese una opcion: "))
+            if 1 <= opcion <= len(dias):
+                return dias[opcion - 1]
+            print("La opcion ingresada no es valida")
+        except ValueError:
+            print("Debe ingresar un numero")
 
 def validar_horario(horario_entrada,horario_salida):
     """Verifica que el horario este dentro del horario de funcionamiento y que la entrada sea menor que la salida
@@ -120,7 +143,7 @@ def guardar_reserva(reservas,cliente,num_cancha,fecha,horario_entrada,horario_sa
     nueva_reserva = [num_cancha,cliente[1],fecha,horario_entrada,horario_salida,precio_total]
     reservas.append(nueva_reserva)
 
-def crear_reserva(canchas, reservas, dias, cliente):
+def crear_reserva(canchas, reservas, cliente):
     """Permite al cliente crear una nueva reserva.
     Parámetros:
         canchas: lista que contiene las canchas registradas.
@@ -134,6 +157,8 @@ def crear_reserva(canchas, reservas, dias, cliente):
     print("CREAR RESERVA")
     print("================================")
 
+    # Genera dias
+    dias=generar_dias(7)
     # Seleccionar día
     fecha = seleccionar_dia(dias)
     # Mostrar canchas
