@@ -6,12 +6,17 @@ administrador = {
     "contraseña": "admin123"
 }
 def iniciar_sesion_admin(administrador):
-    dni = input("Ingrese su DNI:")
-    contraseña = input("Ingrese su contraseña:")
-    if dni ==administrador["dni"] and contraseña == administrador["contraseña"]:
-        print("¡¡¡Inicio de sesión exitoso!!!")
-        print ("Bienvenido: ", administrador["nombre"])
-        return True
+    intentos_maximos = 3
+    for intento in range(1, intentos_maximos +1):
+        dni = input("Ingrese su DNI:")
+        contraseña = input("Ingrese su contraseña:")
+        if dni ==administrador["dni"] and contraseña == administrador["contraseña"]:
+           print("¡¡¡Inicio de sesión exitoso!!!")
+           print ("Bienvenido: ", administrador["nombre"])
+           return True
+        restantes = intentos_maximos - intento
+        if restantes > 0:
+            print("El DNI y la constraseña son incorrectos. Intentos restantes:", restantes)
     print("El DNI y la contraseña son incorrectos")
     return False
 

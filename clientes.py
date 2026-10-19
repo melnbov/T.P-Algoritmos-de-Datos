@@ -58,7 +58,7 @@ def pedir_dato(mensaje, validador, mensaje_error):
                 raise ValueError(mensaje_error)
             return dato
         except ValueError as error:
-            print(error)
+            print("Error en el dato ingresado")
 
 def pedir_dni_nuevo(clientes):
     """ Pide un DNI y lo vuelve a pedir hasta que tenga formato valido y no este registrado. Usa excepciones ValueError para ambos casos.
