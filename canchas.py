@@ -10,7 +10,7 @@ def existe_cancha(canchas, numero):
     existe = False
     
     for cancha in canchas:
-        if cancha[0] == numero:
+        if cancha["numero"] == numero:
             existe = True
     return existe
     
@@ -69,6 +69,55 @@ def elegir_tipo_techo():
 
     return tipo_techo
 
+def pedir_opcion():
+    opcion = input("¿Quiere registrar una cancha? Ingrese 1 para SI y 2 para NO: ")
+
+    while opcion != "1" and opcion != "2":
+        opcion = input("Opción inválida, ingrese 1 para SI y 2 para NO: ")
+
+    return opcion
+
+def pedir_numero_cancha(canchas):
+        
+    numero_valido = False
+
+    while not numero_valido:
+        try:
+            numero = int(input("Ingrese un número del 1 al 20 para identificar la cancha: "))
+
+            if numero < 1 or numero > 20:
+                print("Número inválido. Debe estar entre 1 y 20.")
+
+            else:
+                existe = existe_cancha(canchas, numero)
+
+                if existe:
+                    print("Ya existe una cancha con ese número de identificación. Ingrese otro.")
+                else:
+                    numero_valido = True
+
+        except ValueError:
+            print("Entrada inválida. Debe ingresar un número entero.")
+    
+    return numero
+
+def pedir_precio():
+    
+    precio_valido = False
+
+    while not precio_valido:
+        try:
+            precio = float(input("Ingrese el precio por hora: "))
+
+            if precio > 0:
+                precio_valido = True
+            else:
+                print("El precio debe ser mayor que cero.")
+
+        except ValueError:
+            print("Entrada inválida. Debe ingresar un precio numérico.")
+    return precio
+
 def registrar_cancha(canchas):
     """
     Permite registrar una o más canchas en el sistema.
@@ -80,38 +129,14 @@ def registrar_cancha(canchas):
     Retorna:
         No retorna ningún valor. Modifica la lista canchas.
     """
-     
-    opcion = input("¿Quiere registrar una cancha? Ingresar 1 para SI y 2 para NO: ")
 
-    while opcion !="2" and opcion !="1":
-        opcion = input("Opcion invalida, ingrese 1 para SI y 2 para NO")
-
+    opcion = pedir_opcion()
 
     while opcion == "1":
 
         # numero de cancha
-        numero_valido = False
+        numero = pedir_numero_cancha(canchas)
 
-        while not numero_valido:
-            try:
-                numero = int(input("Ingrese un número del 1 al 20 para identificar la cancha: "))
-
-                if numero < 1 or numero > 20:
-                    print("Número inválido. Debe estar entre 1 y 20.")
-
-                else:
-                    existe = existe_cancha(canchas, numero)
-
-                    if existe:
-                        print("Ya existe una cancha con ese número de identificación. Ingrese otro.")
-                    else:
-                        numero_valido = True
-
-            except ValueError:
-                print("Entrada inválida. Debe ingresar un número entero.")
-
-
-        
         #Llamando a la funcion de tipo de piso
         tipo_piso = elegir_tipo_piso()
 
@@ -119,21 +144,9 @@ def registrar_cancha(canchas):
         tipo_techo = elegir_tipo_techo()
 
         # precio
-        precio_valido = False
+        precio = pedir_precio()
 
-        while not precio_valido:
-            try:
-                precio = float(input("Ingrese el precio por hora: "))
-
-                if precio > 0:
-                    precio_valido = True
-                else:
-                    print("El precio debe ser mayor que cero.")
-
-            except ValueError:
-                print("Entrada inválida. Debe ingresar un precio numérico.")
-
-        nueva_cancha = [numero, tipo_piso, tipo_techo, precio, "Disponible"]
+        nueva_cancha = {"numero": numero, "piso": tipo_piso, "techo": tipo_techo, "precio": precio, "estado": "Disponible"}
         canchas.append(nueva_cancha)
 
         print("Cancha registrada correctamente.")
@@ -157,15 +170,15 @@ def mostrar_canchas(canchas):
 
         canchas_ordenadas = canchas.copy() #uso copy para no modificar la lista original, sino que crearme una copia para modificar
 
-        canchas_ordenadas.sort(key=lambda cancha: cancha[0])
+        canchas_ordenadas.sort(key=lambda cancha: cancha["numero"])
 
         print("\n--- CANCHAS REGISTRADAS ---")
         for cancha in canchas_ordenadas:
-            print("Número de cancha:", cancha[0])
-            print("Tipo de piso:", cancha[1])
-            print("Tipo de techo:", cancha[2])
-            print("Precio por hora: $", cancha[3])
-            print("Estado:", cancha[4])
+            print("Número de cancha:", cancha["numero"])
+            print("Tipo de piso:", cancha["piso"])
+            print("Tipo de techo:", cancha["techo"])
+            print("Precio por hora: $", cancha["precio"])
+            print("Estado:", cancha["estado"])
             print("--------------------------")
 
 def buscar_cancha(canchas):
@@ -185,22 +198,22 @@ def buscar_cancha(canchas):
         print("Canchas registradas:")
 
         for cancha in canchas:
-            print("Cancha N°", cancha[0])
+            print("Cancha N°", cancha["numero"])
 
         numero_a_buscar = int(input("Ingrese el número de cancha que desea buscar: "))
 
         encontrada = False
 
         for cancha in canchas:
-            if cancha[0] == numero_a_buscar:
+            if cancha["numero"] == numero_a_buscar:
                 encontrada = True
 
                 print("\n--- CANCHA ENCONTRADA ---")
-                print("Número:", cancha[0])
-                print("Tipo de piso:", cancha[1])
-                print("Tipo de techo:", cancha[2])
-                print("Precio por hora: $", cancha[3])
-                print("Estado:", cancha[4])
+                print("Número:", cancha["numero"])
+                print("Tipo de piso:", cancha["piso"])
+                print("Tipo de techo:", cancha["techo"])
+                print("Precio por hora: $", cancha["precio"])
+                print("Estado:", cancha["estado"])
                 print("-------------------------")
 
         if encontrada == False:
@@ -218,7 +231,7 @@ def buscar_posicion_cancha(canchas, numero):
     """
 
     for i in range(len(canchas)):
-        if canchas[i][0] == numero:
+        if canchas[i]["numero"] == numero:
             return i
     return -1
 
@@ -245,6 +258,7 @@ def elegir_estado():
             estado = "Disponible"
         case "2":
             estado = "No disponible"
+    return estado
 
 
 def mostrar_datos_cancha(cancha):
@@ -257,11 +271,11 @@ def mostrar_datos_cancha(cancha):
         No retorna ningún valor. Muestra los datos en pantalla.
     """
 
-    print("Número:", cancha[0])
-    print("Tipo de piso:", cancha[1])
-    print("Tipo de techo:", cancha[2])
-    print("Precio por hora: $", cancha[3])
-    print("Estado:", cancha[4])
+    print("Número:", cancha["numero"])
+    print("Tipo de piso:", cancha["piso"])
+    print("Tipo de techo:", cancha["techo"])
+    print("Precio por hora: $", cancha["precio"])
+    print("Estado:", cancha["estado"])
 
 def modificar_dato_cancha(canchas, pos):
     """
@@ -286,13 +300,13 @@ def modificar_dato_cancha(canchas, pos):
 
     match opcion:
         case "1":
-            canchas[pos][1] = elegir_tipo_piso()
+            canchas[pos]["piso"] = elegir_tipo_piso()
         case "2":
-            canchas[pos][2] = elegir_tipo_techo()
+            canchas[pos]["techo"] = elegir_tipo_techo()
         case "3":
-            canchas[pos][3] = float(input("Ingrese el nuevo precio por hora: "))
+            canchas[pos]["precio"] = float(input("Ingrese el nuevo precio por hora: "))
         case "4":
-            canchas[pos][4] = elegir_estado()
+            canchas[pos]["estado"] = elegir_estado()
         case "5":
             print("No se realizaron modificaciones.")
         case _:
@@ -315,7 +329,7 @@ def modificar_cancha(canchas):
         print("Canchas registradas:")
 
         for cancha in canchas:
-            print("Cancha N°", cancha[0])
+            print("Cancha N°", cancha["numero"])
 
         numero_a_modificar = int(input("Ingrese el número de cancha que desea modificar: "))
 
@@ -350,7 +364,7 @@ def eliminar_cancha(canchas):
         print("Canchas registradas:")
 
         for cancha in canchas:
-            print("Cancha N°", cancha[0])
+            print("Cancha N°", cancha["numero"])
 
         numero_a_eliminar = int(input("Ingrese el número de cancha que desea eliminar: "))
 
@@ -384,7 +398,7 @@ def obtener_canchas_disponibles(canchas):
         Una lista con las canchas cuyo estado es Disponible.
     """
 
-    disponibles = list(filter(lambda cancha: cancha[4] == "Disponible", canchas)) #va tomando cada cancha de canchas y pregunta:¿esta disponible? Si da True, la conserva. Si da False, no la incluye.
+    disponibles = list(filter(lambda cancha: cancha["estado"] == "Disponible", canchas)) #va tomando cada cancha de canchas y pregunta:¿esta disponible? Si da True, la conserva. Si da False, no la incluye.
 
     return disponibles
 
@@ -411,7 +425,7 @@ def mostrar_disponibilidad(canchas):
             print("\n--- CANCHAS DISPONIBLES ---")
 
             for cancha in disponibles:
-                print("Cancha N°", cancha[0])
+                print("Cancha N°", cancha["numero"])
 
 
 def aumentar_precios(canchas, porcentaje):
@@ -429,12 +443,13 @@ def aumentar_precios(canchas, porcentaje):
     """
 
     canchas_actualizadas = list(map(
-        lambda cancha: [cancha[0],
-                        cancha[1],
-                        cancha[2],
-                        cancha[3] * (1 + porcentaje / 100),
-                        cancha[4]],
-        canchas
+        lambda cancha: {
+            "numero": cancha["numero"],
+            "piso":   cancha["piso"],
+            "techo":  cancha["techo"],
+            "precio": cancha["precio"] * (1 + porcentaje / 100),
+            "estado": cancha["estado"]
+            }, canchas
     ))
 
     return canchas_actualizadas
