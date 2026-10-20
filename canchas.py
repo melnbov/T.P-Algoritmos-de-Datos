@@ -13,6 +13,23 @@ def existe_cancha(canchas, numero):
         if cancha["numero"] == numero:
             existe = True
     return existe
+
+def pedir_numero():
+    numero_valido = False
+
+    while not numero_valido:
+        try:
+            numero = int(input("Ingrese el numero de cancha del 1 al 20: "))
+
+            if numero < 1 or numero > 20:
+                print("El numero debe estar entre 1 y 20")
+            else: 
+                numero_valido = True
+
+        except ValueError:
+            print("Entrada inválida. Debe ingresar un número entero.")
+    
+    return numero
     
 def elegir_tipo_piso():
     """
@@ -200,7 +217,7 @@ def buscar_cancha(canchas):
         for cancha in canchas:
             print("Cancha N°", cancha["numero"])
 
-        numero_a_buscar = int(input("Ingrese el número de cancha que desea buscar: "))
+        numero_a_buscar = pedir_numero()
 
         encontrada = False
 
@@ -331,7 +348,7 @@ def modificar_cancha(canchas):
         for cancha in canchas:
             print("Cancha N°", cancha["numero"])
 
-        numero_a_modificar = int(input("Ingrese el número de cancha que desea modificar: "))
+        numero_a_modificar = pedir_numero()
 
         #Llamo a la funcion que vos le das el numero de cancha y te devuelva la posicion y si no la encuentra, que te de -1
         pos = buscar_posicion_cancha(canchas, numero_a_modificar)
@@ -366,13 +383,14 @@ def eliminar_cancha(canchas):
         for cancha in canchas:
             print("Cancha N°", cancha["numero"])
 
-        numero_a_eliminar = int(input("Ingrese el número de cancha que desea eliminar: "))
+        numero_a_eliminar = pedir_numero()
 
         # Busco la posición de la cancha
         pos = buscar_posicion_cancha(canchas, numero_a_eliminar)
 
         if pos == -1:
             print("No existe una cancha con ese número.")
+            input("Presione Enter para volver al menú...")
         else:
             print("\nDatos de la cancha que desea eliminar:")
 
