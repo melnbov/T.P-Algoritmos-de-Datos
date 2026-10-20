@@ -1,23 +1,22 @@
 from functools import reduce
 
-administrador = [
-    "administrador",
-    "42456789",
-    "admin123"
-]
-
+administrador = {
+    "nombre": "administrador",
+    "dni": "42456789",
+    "contraseña": "admin123"
+}
 def iniciar_sesion_admin(administrador):
-    """
-    Permite iniciar sesión a un administrador verificando su DNI y contraseña.
-    Parámetros: administrador: Lista que contiene los datos del administrador: nombre, DNI y contraseña.
-    Retorna: True si el DNI y la contraseña son correctos. False si alguno de los datos ingresados es incorrecto.
-    """
-    dni = input("Ingrese su DNI:")
-    contraseña = input("Ingrese su contraseña:")
-    if dni ==administrador[1] and contraseña == administrador[2]:
-        print("¡¡¡Inicio de sesión exitoso!!!")
-        print ("Bienvenido: ", administrador[0])
-        return True
+    intentos_maximos = 3
+    for intento in range(1, intentos_maximos +1):
+        dni = input("Ingrese su DNI:")
+        contraseña = input("Ingrese su contraseña:")
+        if dni ==administrador["dni"] and contraseña == administrador["contraseña"]:
+           print("¡¡¡Inicio de sesión exitoso!!!")
+           print ("Bienvenido: ", administrador["nombre"])
+           return True
+        restantes = intentos_maximos - intento
+        if restantes > 0:
+            print("El DNI y la constraseña son incorrectos. Intentos restantes:", restantes)
     print("El DNI y la contraseña son incorrectos")
     return False
 
@@ -39,8 +38,8 @@ def mostrar_todas_reservas(reservas, clientes):
         nombre_cliente="Desconocido"
         
         for cliente in clientes:
-            if cliente[1]== reserva[1]:
-                nombre_cliente=cliente[0]
+            if cliente["dni"]== reserva[1]:
+                nombre_cliente=cliente["nombre"]
                 break
         
         print("Cliente: ", nombre_cliente)
@@ -64,8 +63,8 @@ def buscar_reservas_clientes(reservas, clientes):
     nombre_cliente="Desconocido"
     
     for cliente in clientes:
-        if cliente[1]==dni:
-            nombre_cliente= cliente[0]
+        if cliente["dni"]==dni:
+            nombre_cliente= cliente["nombre"]
             break
     
     print("---------------------")
@@ -167,12 +166,15 @@ def reservas_por_cliente(reservas, clientes):
     print("--------------------")
     
     for cliente in clientes:
-        reservas_cliente = list(filter(lambda reserva: reserva[1] == cliente[1], reservas))
+
+        reservas_cliente = list(
+            filter(lambda reserva: reserva[1] == cliente["dni"], reservas)
+        )
 
         cantidad = len(reservas_cliente)
 
-        print("Cliente: ", cliente[0])
-        print("DNI: ", cliente[1])
+        print("Cliente: ", cliente["nombre"])
+        print("DNI: ", cliente["dni"])
         print("Cantidad de reservas: ", cantidad)
     print("Calcular de clientes con reservas: ", len(dnis_con_reservas))
         
