@@ -1,4 +1,7 @@
 from canchas import mostrar_canchas
+from datetime import date, timedelta
+
+DIAS_SEMANA=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
 
 def verificar_numero_cancha(buscado,canchas):
     """Verifica si existe una cancha con el numero ingresado por el usuario
@@ -8,7 +11,7 @@ def verificar_numero_cancha(buscado,canchas):
         Retorna:True si existe una cancha con ese número.False si no existe.
     """
     for cancha in canchas: 
-        if cancha[0] == buscado:
+        if cancha["numero"] == buscado:
             return True
     return False
 
@@ -19,26 +22,46 @@ def obtener_precio_cancha(canchas,num_cancha):
         num_cancha: número de la cancha cuyo precio se desea obtener.
         Retorna:El precio por hora de la cancha indicada.
     """
-    for cancha in canchas: 
-        if cancha[0] == num_cancha:
-            return cancha[3]
+    for cancha in canchas:
+        if cancha["numero"] == num_cancha:
+            return cancha["precio"]
+
+def generar_dias(cantidad):
+    """Genera la lista de días disponibles para realizar reservas.
+    Parte desde la fecha actual y avanza día por día, omitiendo los domingos,
+    hasta completar la cantidad pedida. Así la lista se actualiza sola cada día.
+    Parámetros:
+        cantidad: cantidad de días que se desean generar.
+    Retorna: lista de fechas de lunes a sábado.
+    """
+    dias=[]
+    dia=date.today()
+    while len(dias) < cantidad:
+        if dia.weekday() != 6:
+            dias.append(dia)
+        dia += timedelta(days=1)
+    return dias
 
 def seleccionar_dia(dias):
-    """Permite al usuario seleccionar el dia en el que desea realizar la reserva
-        Parámetros:
-        dias: lista de días disponibles para realizar reservas.
-        Retorna:El día seleccionado por el usuario.
+    """Permite al usuario seleccionar el día en el que desea realizar la reserva.
+    Muestra los días numerados junto con el nombre del día de la semana, y pide
+    una opción hasta que el usuario ingrese un número válido.
+    Parámetros:
+        dias: lista de fechas (objetos date) disponibles para reservar.
+    Retorna: la fecha (objeto date) seleccionada por el usuario.
     """
     print("Seleccione el día: ")
-    for i in range(len(dias)):
-        print(i+1,"-",dias[i])
-
-    opcion=int(input("Ingrese una opcion: "))
-
-    while opcion < 1 or opcion > len(dias):
-        print("La opción ingresada no es valida. ")
-        opcion=int(input("Ingrese nuevamente una opción: "))
-    return dias[opcion-1]
+    for i,dia in enumerate(dias, start=1):
+        nombre_dia=DIAS_SEMANA[dia.weekday()]
+        print(f"{i} - {nombre_dia} {dia.strftime('%d/%m/%Y')}")
+    while True:
+        try:
+            opcion=int(input("Ingrese una opcion: "))
+            if 1 <= opcion <= len(dias):
+                return dias[opcion - 1]
+            print("La opcion ingresada no es valida")
+        except ValueError:
+            print("Debe ingresar un numero")
 
 def validar_horario(horario_entrada,horario_salida):
     """Verifica que el horario este dentro del horario de funcionamiento y que la entrada sea menor que la salida
@@ -100,7 +123,7 @@ def calcular_precio(horario_entrada,horario_salida,precio_hora):
         precio_hora: precio de la cancha por una hora.
         Retorna:El precio total de la reserva. 
     """
-    precio_total =  (horario_salida - horario_entrada) * precio_hora
+    precio_total = (horario_salida - horario_entrada) * precio_hora
 
     return precio_total
 
@@ -117,10 +140,10 @@ def guardar_reserva(reservas,cliente,num_cancha,fecha,horario_entrada,horario_sa
         Retorna:
         No retorna ningún valor. Agrega la nueva reserva a la lista.
     """
-    nueva_reserva = [num_cancha,cliente[1],fecha,horario_entrada,horario_salida,precio_total]
+    nueva_reserva = [num_cancha, cliente["dni"], fecha, horario_entrada, horario_salida, precio_total]
     reservas.append(nueva_reserva)
 
-def crear_reserva(canchas, reservas, dias, cliente):
+def crear_reserva(canchas, reservas, cliente):
     """Permite al cliente crear una nueva reserva.
     Parámetros:
         canchas: lista que contiene las canchas registradas.
@@ -134,16 +157,24 @@ def crear_reserva(canchas, reservas, dias, cliente):
     print("CREAR RESERVA")
     print("================================")
 
+    # Genera dias
+    dias=generar_dias(7)
     # Seleccionar día
     fecha = seleccionar_dia(dias)
     # Mostrar canchas
     mostrar_canchas(canchas)
     # Seleccionar cancha
-    num_cancha = int(input("\nIngrese el número de cancha: "))
-
-    while verificar_numero_cancha(num_cancha,canchas) == False:
-        print("Ese número de cancha no existe.")
-        num_cancha = int(input("Ingrese nuevamente el número de cancha: "))
+    while True:
+        try:
+            num_cancha = int(input("\nIngrese el número de cancha: "))
+            if num_cancha == 0:
+                print("Reserva cancelada.")
+                return
+            if verificar_numero_cancha(num_cancha,canchas):
+                break
+            print("Ese numero de cancha no existe.")
+        except ValueError:
+            print("Debe ingresa un numero entero valido")
 
     # Seleccionar horario
     horario_entrada, horario_salida = seleccionar_horario()
@@ -168,8 +199,8 @@ def crear_reserva(canchas, reservas, dias, cliente):
     print("\n================================")
     print("   RESERVA REALIZADA")
     print("================================")
-    print("Cliente:", cliente[0])
-    print("DNI:", cliente[1])
+    print("Cliente:", cliente["nombre"])
+    print("DNI:", cliente["dni"])
     print("Cancha:", num_cancha)
     print("Fecha:", fecha)
     print("Horario:", horario_entrada, "-", horario_salida)
@@ -182,7 +213,7 @@ def mostrar_reserva(reservas, cliente):
     Parámetros:reservas: lista que contiene las reservas realizadas
     Retorna:No retorna ningún valor. Muestra las reservas en pantalla. 
     """
-    mis_reservas=[reserva for reserva in reservas if reserva[1] == cliente[1]]
+    mis_reservas = [reserva for reserva in reservas if reserva[1] == cliente["dni"]]
     if len(mis_reservas) == 0:
         print("No hay reservas realizadas")
     else:
@@ -199,26 +230,6 @@ def mostrar_reserva(reservas, cliente):
 
             print("-------------------------------- ")
 
-def buscar_reserva(reservas):
-    """Permite buscar una reserva segun el numero de cancha 
-        Parámetros:reservas: lista que contiene las reservas realizadas.
-        Retorna: No retorna ningún valor. Muestra la reserva encontrada
-        o informa si no existe. 
-    """
-    num_cancha=int(input("Ingrese el numero de cancha que desea buscar: "))
-
-    for reserva in reservas:
-        if num_cancha == reserva[0]:
-            print("\n================================")
-            print(" RESERVA REALIZADA")
-            print("================================")
-            print("Cancha:", reserva[0])
-            print("DNI:", reserva[1])
-            print("Fecha:", reserva[2])
-            print("Horario:", reserva[3], "-", reserva[4])
-            print("Precio total: $", reserva[5])    
-            return
-    print("No existe una reserva para esa cancha.")
 
 def cancelar_reserva(reservas, cliente):
     """Se cancela una reserva, ingresando numero de cancha, fecha y horario porque como se puede hacer varias
@@ -231,21 +242,24 @@ def cancelar_reserva(reservas, cliente):
 
     mostrar_reserva(reservas,cliente)
 
-    num_cancha = int(input("Ingrese el número de cancha: "))
-    fecha = input("Ingrese la fecha de la reserva: ")
-    horario_entrada = int(input("Ingrese el horario de entrada: "))
-
-    encontrada = False
+    try:
+        num_cancha = int(input("Ingrese el número de cancha (0 para salir): "))
+        if num_cancha == 0:
+            print("Operacion cancelada.")
+            return
+        fecha = input("Ingrese la fecha de la reserva: ")
+        horario_entrada = int(input("Ingrese el horario de entrada: "))
+    except ValueError:
+        print("Dato invalido. Operacion cancelada.")
+        return
 
     for reserva in reservas:
-        if (cliente[1] == reserva[1] and num_cancha == reserva[0] and fecha == reserva[2] and horario_entrada == reserva[3]):
+        if (cliente["dni"] == reserva[1] and num_cancha == reserva[0] and fecha == reserva[2] and horario_entrada == reserva[3]):
             reservas.remove(reserva)
             print("Reserva cancelada correctamente.")
-            encontrada = True
-            break
+            return
 
-    if not encontrada:
-        print("No se encontró una reserva con esos datos.")
+    print("No se encontró una reserva con esos datos.")
     
             
 
