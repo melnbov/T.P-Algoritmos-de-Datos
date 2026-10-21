@@ -93,8 +93,11 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         elif opcion==9:
             try:
                 porcentaje = float(input("Ingrese el porcentaje de aumento sin %: "))
-                lista_canchas=canchas.aumentar_precios(lista_canchas, porcentaje)
-                print("\n¡¡Precios actualizados correctamente!!")
+                if porcentaje <= 0:
+                    print("El porcentaje debe ser mayor que cero.")
+                else:
+                    lista_canchas = canchas.aumentar_precios(lista_canchas, porcentaje)
+                    print("Precios actualizados correctamente.")
             except ValueError:
                 print("Debe ingresar un porcentaje válido")
         elif opcion == 10:
@@ -118,11 +121,11 @@ def main():
     lista_reservas=[]
     
     #datos del admin
-    datos_administrador=[
-        "Administrador",
-        "42456789",
-        "admin123"
-    ]
+    datos_administrador = {
+        "nombre": "Administrador",
+        "dni": "42456789",
+        "contraseña": "admin123"
+    }
     
     opcion=0
     

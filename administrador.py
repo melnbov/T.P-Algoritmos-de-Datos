@@ -96,7 +96,7 @@ def buscar_reservas_cancha(reservas, canchas):
     existe_cancha=False
     
     for cancha in canchas:
-        if cancha[0]== numero_cancha:
+        if cancha["numero"]== numero_cancha:
             existe_cancha=True
             break
         
@@ -198,12 +198,12 @@ def cancha_mas_reservada(reservas, canchas):
         cantidad=0
         
         for reserva in reservas:
-            if reserva[0]==cancha[0]:
+            if reserva[0]==cancha["numero"]:
                 cantidad+=1
         
         if cantidad > mayor_cantidad:
             mayor_cantidad= cantidad
-            cancha_mas_reservada_numero= cancha[0]
+            cancha_mas_reservada_numero= cancha["numero"]
     
     if cancha_mas_reservada_numero is None:
         print("Ninguna cancha tiene reservas")

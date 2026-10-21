@@ -11,7 +11,7 @@ def verificar_numero_cancha(buscado,canchas):
         Retorna:True si existe una cancha con ese número.False si no existe.
     """
     for cancha in canchas: 
-        if cancha[0] == buscado:
+        if cancha["numero"] == buscado:
             return True
     return False
 
@@ -22,9 +22,9 @@ def obtener_precio_cancha(canchas,num_cancha):
         num_cancha: número de la cancha cuyo precio se desea obtener.
         Retorna:El precio por hora de la cancha indicada.
     """
-    for cancha in canchas: 
-        if cancha[0] == num_cancha:
-            return cancha[3]
+    for cancha in canchas:
+        if cancha["numero"] == num_cancha:
+            return cancha["precio"]
 
 def generar_dias(cantidad):
     """Genera la lista de días disponibles para realizar reservas.
@@ -140,7 +140,7 @@ def guardar_reserva(reservas,cliente,num_cancha,fecha,horario_entrada,horario_sa
         Retorna:
         No retorna ningún valor. Agrega la nueva reserva a la lista.
     """
-    nueva_reserva = [num_cancha,cliente[1],fecha,horario_entrada,horario_salida,precio_total]
+    nueva_reserva = [num_cancha, cliente["dni"], fecha, horario_entrada, horario_salida, precio_total]
     reservas.append(nueva_reserva)
 
 def crear_reserva(canchas, reservas, cliente):
@@ -199,8 +199,8 @@ def crear_reserva(canchas, reservas, cliente):
     print("\n================================")
     print("   RESERVA REALIZADA")
     print("================================")
-    print("Cliente:", cliente[0])
-    print("DNI:", cliente[1])
+    print("Cliente:", cliente["nombre"])
+    print("DNI:", cliente["dni"])
     print("Cancha:", num_cancha)
     print("Fecha:", fecha)
     print("Horario:", horario_entrada, "-", horario_salida)
@@ -213,7 +213,7 @@ def mostrar_reserva(reservas, cliente):
     Parámetros:reservas: lista que contiene las reservas realizadas
     Retorna:No retorna ningún valor. Muestra las reservas en pantalla. 
     """
-    mis_reservas=[reserva for reserva in reservas if reserva[1] == cliente[1]]
+    mis_reservas = [reserva for reserva in reservas if reserva[1] == cliente["dni"]]
     if len(mis_reservas) == 0:
         print("No hay reservas realizadas")
     else:
@@ -254,7 +254,7 @@ def cancelar_reserva(reservas, cliente):
         return
 
     for reserva in reservas:
-        if (cliente[1] == reserva[1] and num_cancha == reserva[0] and fecha == reserva[2] and horario_entrada == reserva[3]):
+        if (cliente["dni"] == reserva[1] and num_cancha == reserva[0] and fecha == reserva[2] and horario_entrada == reserva[3]):
             reservas.remove(reserva)
             print("Reserva cancelada correctamente.")
             return
