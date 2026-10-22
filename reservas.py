@@ -1,7 +1,7 @@
 from canchas import mostrar_canchas
 from datetime import date, timedelta
 
-DIAS_SEMANA=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
+DIAS_SEMANA=("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado")
 
 def verificar_numero_cancha(buscado,canchas):
     """Verifica si existe una cancha con el numero ingresado por el usuario
@@ -57,11 +57,13 @@ def seleccionar_dia(dias):
     while True:
         try:
             opcion=int(input("Ingrese una opcion: "))
-            if 1 <= opcion <= len(dias):
-                return dias[opcion - 1]
-            print("La opcion ingresada no es valida")
         except ValueError:
             print("Debe ingresar un numero")
+            continue
+        
+        if 1 <= opcion <= len(dias):
+            return dias[opcion - 1]
+        print("La opcion ingresada no es valida")
 
 def validar_horario(horario_entrada,horario_salida):
     """Verifica que el horario este dentro del horario de funcionamiento y que la entrada sea menor que la salida
@@ -262,7 +264,51 @@ def cancelar_reserva(reservas, cliente):
     print("No se encontró una reserva con esos datos.")
     
             
+def obtener_numeros_sin_reservas(canchas,reservas):
+    """
+    Calcula qué canchas no tienen reservas activas.
+    Retorna:
+        Un conjunto con los números de cancha sin reservas.
+    """
+    todas = {cancha["numero"] for cancha in canchas}
+    reservadas = {r["numero_cancha"] for r in reservas if r["estado"] == "Activa"}
+    return todas - reservadas
 
+
+def filtrar_canchas_por_numero(canchas, numeros):
+    """
+    Selecciona las canchas cuyo número está en el conjunto recibido.
+    Retorna:
+        Una lista con los diccionarios de esas canchas, en su orden original.
+    """
+    return [cancha for cancha in canchas if cancha["numero"] in numeros]
+
+
+def imprimir_cancha(cancha):
+    """Imprime por pantalla la información completa de una cancha."""
+    print(f"Cancha N° {cancha['numero']}")
+    print(f"  Piso:   {cancha['piso']}")
+    print(f"  Techo:  {cancha['techo']}")
+    print(f"  Precio: ${cancha['precio']:.2f} por hora")
+    print(f"  Estado: {cancha['estado']}")
+    print("-------------------------------")
+
+
+def mostrar_canchas_sin_reservas(lista_canchas, lista_reservas):
+    """
+    Muestra la información completa de las canchas sin reservas activas.
+    No retorna ningún valor.
+    """
+    numeros = obtener_numeros_sin_reservas(lista_canchas, lista_reservas)
+    canchas_libres = filtrar_canchas_por_numero(lista_canchas, numeros)
+
+    if not canchas_libres:
+        print("\nTodas las canchas tienen al menos una reserva.")
+        return
+
+    print("\n===== Canchas sin reservas =====")
+    for cancha in canchas_libres:
+        imprimir_cancha(cancha)
 
 
     
