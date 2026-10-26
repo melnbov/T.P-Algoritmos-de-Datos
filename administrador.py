@@ -1,4 +1,5 @@
 from functools import reduce
+import os
 
 administrador = {
     "nombre": "administrador",
@@ -59,7 +60,6 @@ def buscar_reservas_clientes(reservas, clientes):
         return
     
     dni=input("Ingrese el DNI del cliente: ")
-    encontrado=False
     nombre_cliente="Desconocido"
     
     for cliente in clientes:
@@ -67,21 +67,23 @@ def buscar_reservas_clientes(reservas, clientes):
             nombre_cliente= cliente["nombre"]
             break
     
+    reservas_encontradas = [reserva for reserva in reservas if reserva[1] == dni]
+    
     print("---------------------")
     print("Reservas del cliente")
     print("---------------------")
     
-    for reserva in reservas:
-        if reserva[1] == dni:
-            print("Cliente:", nombre_cliente)
-            print("DNI:", reserva[1])
-            print("Cancha:", reserva[0])
-            print("Fecha:", reserva[2])
-            print("Horario:", reserva[3], "-", reserva[4])
-            print("Precio total: $", reserva[5])
-            encontrado = True
-    if not encontrado:
-        print("No se encontraron reservas para ese DNI")
+    if not reservas_encontradas:
+        print("No se encontraron reservas para ese DNI.")
+        return
+    
+    for reserva in reservas_encontradas:
+        print("Cliente:", nombre_cliente)
+        print("DNI:", reserva[1])
+        print("Cancha:", reserva[0])
+        print("Fecha:", reserva[2])
+        print("Horario:", reserva[3], "-", reserva[4])
+        print("Precio total: $", reserva[5])
         
 def buscar_reservas_cancha(reservas, canchas):
     """
@@ -92,22 +94,27 @@ def buscar_reservas_cancha(reservas, canchas):
         print("No hay reservas registradas")
         return
     
-    numero_cancha=int(input("Ingrese el número de la cancha: "))
-    existe_cancha=False
+    try:
+        numero_cancha = int(input("Ingrese el número de la cancha: "))
+    except ValueError:
+        print("Debe ingresar un número de cancha válido.")
+        return
     
-    for cancha in canchas:
-        if cancha["numero"]== numero_cancha:
-            existe_cancha=True
-            break
-        
+    existe_cancha = any(cancha["numero"] == numero_cancha for cancha in canchas)
+    
     if not existe_cancha:
         print("No existe una cancha con ese número")
         return
-    encontrado=False
+    
+    reservas_encontradas=[ reserva for reserva in reservas if reserva[0] == numero_cancha]
     
     print("---------------------")
     print("Reservas de la cancha")
     print("---------------------")
+    
+    if not reservas_encontradas:
+        print("La cancha existe, pero no tiene reservas")
+        return
     
     for reserva in reservas:
         if reserva[0] == numero_cancha:
@@ -116,9 +123,7 @@ def buscar_reservas_cancha(reservas, canchas):
             print("Fecha:", reserva[2])
             print("Horario:", reserva[3], "-", reserva[4])
             print("Precio total: $", reserva[5])
-            encontrado = True
-    if not encontrado:
-        print("La cancha existe, pero no tiene reservas")
+
         
 def calcular_recaudacion(reservas):
     """
@@ -128,20 +133,25 @@ def calcular_recaudacion(reservas):
     recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
     return recaudacion 
 
-def recaudacion_por_cancha(reservas):
-    """ 
-    Calcular cuánto dinero recaudó cada cancha
-    """
-    recaudacion={}
+
+def recaudacion_por_cancha(reservas, canchas):
+    """Devuelve la recaudación de cada cancha, incluyendo las que recaudaron $0."""
+    recaudacion = {}
+
+    for cancha in canchas:
+        recaudacion[cancha["numero"]] = 0
+
     for reserva in reservas:
-        numero_cancha=reserva[0]
-        precio=reserva[5]
-        
+        numero_cancha = reserva[0]
+        precio = reserva[5]
+
         if numero_cancha not in recaudacion:
-            recaudacion[numero_cancha]=0
-            
-        recaudacion[numero_cancha]+=precio
+            recaudacion[numero_cancha] = 0
+
+        recaudacion[numero_cancha] += precio
+
     return recaudacion
+
 
 def cantidad_reservas(reservas):
     """
@@ -157,7 +167,7 @@ def reservas_por_cliente(reservas, clientes):
         print("No hay clientes registrados")
         return
     
-    dnis_con_reservas=set()
+    dnis_con_reservas=set() #pregunto
     for reserva in reservas:
         dnis_con_reservas.add(reserva[1])
         
@@ -191,7 +201,7 @@ def cancha_mas_reservada(reservas, canchas):
         print("No hay canchas registradas")
         return None
     
-    cancha_mas_reservada_numero=0
+    cancha_mas_reservada_numero=None
     mayor_cantidad=0
     
     for cancha in canchas:
@@ -217,29 +227,130 @@ def cancha_mas_reservada(reservas, canchas):
     
     return cancha_mas_reservada_numero
 
+def mostrar_canchas_nunca_reservadas(reservas, canchas):
+    """Muestra las canchas que todavía no tienen reservas."""
+    print("\nCanchas que nunca fueron reservadas:")
+    hay_sin_reservas = False
+
+    for cancha in canchas:
+        tiene_reservas = False
+        for reserva in reservas:
+            if reserva[0] == cancha["numero"]:
+                tiene_reservas = True
+                break
+        if not tiene_reservas:
+            print("Cancha:", cancha["numero"])
+            hay_sin_reservas = True
+
+    if not hay_sin_reservas:
+        print("Todas las canchas tienen al menos una reserva.")
+
+
 def generar_reporte(reservas, clientes, canchas):
-    """
-    Genera un reporte general con los principales datos del sistema:
-    cantidad de reservas, recaudación total, reservas por cliente
-    y cancha más reservada.
-    """
-    print("===============")
-    print("REPORTE GENERAL")    
-    print("===============")
-    
-    print("Cantidad total de reservas: ", cantidad_reservas(reservas))
-    print("Recaudación total: $ ", calcular_recaudacion(reservas))
-    
-    print("\nReservas por cliente:")
-    reservas_por_cliente(reservas, clientes)
-    
-    print("\nCancha mas reservada:")
-    cancha_mas_reservada(reservas, canchas)
-    
-    print("\nRecaudación por cancha: ")
-    recaudacion=recaudacion_por_cancha(reservas)
-    
-    for cancha in recaudacion:
-        print("Cancha: ", cancha, "-Recaudacioón: $", recaudacion[cancha])
-        
+    """Muestra el reporte general y lo guarda en un archivo de texto."""
+    lineas = []
+    lineas.append("===============")
+    lineas.append("REPORTE GENERAL")
+    lineas.append("===============")
+    lineas.append("Cantidad total de reservas: " + str(cantidad_reservas(reservas)))
+    lineas.append(f"Recaudación total: $ {calcular_recaudacion(reservas):.2f}")
+
+    lineas.append("")
+    lineas.append("RESERVAS POR CLIENTE")
+
+    if len(clientes) == 0:
+        lineas.append("No hay clientes registrados")
+    else:
+        dnis_con_reservas = set()
+
+        for reserva in reservas:
+            dnis_con_reservas.add(reserva[1])
+
+        for cliente in clientes:
+            reservas_cliente = list(
+                filter(lambda reserva: reserva[1] == cliente["dni"], reservas)
+            )
+            cantidad = len(reservas_cliente)
+
+            lineas.append("Cliente: " + cliente["nombre"])
+            lineas.append("DNI: " + cliente["dni"])
+            lineas.append("Cantidad de reservas: " + str(cantidad))
+            lineas.append("--------------------")
+
+        lineas.append("Cantidad de clientes con reservas: " + str(len(dnis_con_reservas)))
+
+    lineas.append("")
+    lineas.append("CANCHA MÁS RESERVADA")
+
+    if len(reservas) == 0:
+        lineas.append("No hay reservas registradas")
+    elif len(canchas) == 0:
+        lineas.append("No hay canchas registradas")
+    else:
+        cancha = None
+        mayor_cantidad = 0
+
+        for cancha_actual in canchas:
+            cantidad = 0
+
+            for reserva in reservas:
+                if reserva[0] == cancha_actual["numero"]:
+                    cantidad += 1
+
+            if cantidad > mayor_cantidad:
+                mayor_cantidad = cantidad
+                cancha = cancha_actual["numero"]
+
+        if cancha is None:
+            lineas.append("Ninguna cancha tiene reservas")
+        else:
+            lineas.append("Cancha: " + str(cancha))
+            lineas.append("Cantidad de reservas: " + str(mayor_cantidad))
+
+    lineas.append("")
+    lineas.append("RECAUDACIÓN POR CANCHA")
+    recaudacion = recaudacion_por_cancha(reservas, canchas)
+
+    if len(recaudacion) == 0:
+        lineas.append("No hay canchas registradas")
+    else:
+        for numero in sorted(recaudacion):
+            lineas.append(
+                f"Cancha {numero} - Recaudación: $ {recaudacion[numero]:.2f}"
+            )
+
+    lineas.append("")
+    lineas.append("CANCHAS QUE NUNCA FUERON RESERVADAS")
+    numeros_reservados = [reserva[0] for reserva in reservas]
+    hay_sin_reservas = False
+
+    if len(canchas) == 0:
+        lineas.append("No hay canchas registradas")
+    else:
+        for cancha in canchas:
+            if cancha["numero"] not in numeros_reservados:
+                lineas.append("Cancha: " + str(cancha["numero"]))
+                hay_sin_reservas = True
+
+        if not hay_sin_reservas:
+            lineas.append("Todas las canchas tienen al menos una reserva.")
+
+   
+    contenido_reporte = "\n".join(lineas)
+
+    carpeta_actual = os.path.dirname(os.path.abspath(__file__))
+    ruta_archivo = os.path.join(carpeta_actual, "reporte_general.txt")
+
+    try:
+        with open(ruta_archivo, "w", encoding="utf-8") as archivo:
+            archivo.write(contenido_reporte)
+
+        print("Reporte guardado correctamente.")
+        print("Ubicación:", ruta_archivo)
+
+    except OSError as error:
+        print("No se pudo guardar el reporte.")
+        print("Error:", error)
+
+    print("\n" + contenido_reporte)
 
