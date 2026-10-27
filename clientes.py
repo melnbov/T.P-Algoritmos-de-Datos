@@ -65,7 +65,7 @@ def pedir_dato(mensaje, validador, mensaje_error):
                 raise ValueError(mensaje_error)
             return dato
         except ValueError as error:
-            print("Error en el dato ingresado")
+            print(error)
 
 def pedir_dni_nuevo(clientes):
     """ Pide un DNI y lo vuelve a pedir hasta que tenga formato valido y no este registrado. Usa excepciones ValueError para ambos casos.
@@ -94,7 +94,7 @@ def registrar_clientes(clientes):
     nombre = pedir_dato ("Ingrese su nombre:", validar_nombre, "Nombre invalido: minimo 3 letras, sin numeros ni simbolos")
     dni = pedir_dni_nuevo (clientes)
     telefono = pedir_dato("Ingrese su número de teléfono:", validar_telefono, "Telefono invalido: minimo 8 digitos numericos")
-    contraseña = pedir_dato("Cree su contraseña: "), validar_contraseña, "Contraseña invalida: minimo 6 caracteres"
+    contraseña = pedir_dato("Cree su contraseña: ", validar_contraseña, "Contraseña invalida: minimo 6 caracteres")
 
     nuevo_cliente = {
     "nombre": nombre,
@@ -126,9 +126,9 @@ def iniciar_sesion_cliente(clientes):
             break
         restantes = intentos_maximos - intento 
         if restantes > 0:
-            print("No existe un cliente registrado con este DNI.")
+            print("No existe un cliente registrado con este DNI. Intentos restantes:", restantes)
     if cliente_encontrado is None:
-        print("Demasiados intentos fallifos")
+        print("Demasiados intentos fallidos")
         return None
 
     for intento in range(1, intentos_maximos +1):
