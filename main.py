@@ -13,16 +13,6 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
     lista_canchas: matriz que contiene las canchas registradas.
     lista_reservas: matriz que contiene las reservas registradas.
     """
-    #dias para alquilar la cancha
-    dias=[ 
-        "28/08/2026",
-        "29/08/2026",
-        "30/08/2026",
-        "31/08/2026",
-        "01/09/2026",
-        "02/09/2026",
-        "03/09/2026"
-    ]
     opcion=0
     while opcion!=5:
         print("\n=====Menú Cliente=====")
@@ -33,14 +23,18 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
         print("5. Cerrar sesión")
         print("--------------------------")
         
-        opcion=int(input("Ingrese una opción: "))
+        try:
+            opcion=int(input("Ingrese una opción: "))
+        except:
+            print("Debe ingresar un número")
+            opcion=0
         
         if opcion== 1: 
             canchas.mostrar_canchas(lista_canchas)
         elif opcion==2:
-            reservas.crear_reserva(lista_canchas, lista_reservas, dias, cliente_actual)
+            reservas.crear_reserva(lista_canchas, lista_reservas, cliente_actual)
         elif opcion==3:
-            reservas.mostrar_reserva(lista_reservas)
+            reservas.mostrar_reserva(lista_reservas,cliente_actual)
         elif opcion==4:
             reservas.cancelar_reserva(lista_reservas, cliente_actual)
         elif opcion==5:
@@ -60,7 +54,7 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
     """
         
     opcion=0
-    while opcion !=9:
+    while opcion !=10:
         print("\n=====Menú Administrador========")
         print("1. Registrar cancha")
         print("2. Consultar canchas")
@@ -70,10 +64,16 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         print("6. Buscar reservas por cliente")
         print("7. Buscar reservas por cancha")
         print("8. Generar reporte")
-        print("9. Cerrar sesión")
+        print("9. Aumentar precios")
+        print("10. Cerrar sesión")
         print("=================================")
             
-        opcion=int(input("Ingrese una opción: "))
+        try:
+            opcion=int(input("Ingrese una opción: "))
+        except:
+            print("Debe ingresar un número")
+            opcion=0
+            
         if opcion == 1:
             canchas.registrar_cancha(lista_canchas)
         elif opcion == 2:
@@ -90,10 +90,21 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
             administrador.buscar_reservas_cancha(lista_reservas, lista_canchas)
         elif opcion == 8:
            administrador.generar_reporte(lista_reservas, lista_clientes, lista_canchas)
-        elif opcion == 9:
+        elif opcion==9:
+            try:
+                porcentaje = float(input("Ingrese el porcentaje de aumento sin %: "))
+                if porcentaje <= 0:
+                    print("El porcentaje debe ser mayor que cero.")
+                else:
+                    lista_canchas = canchas.aumentar_precios(lista_canchas, porcentaje)
+                    print("Precios actualizados correctamente.")
+            except ValueError:
+                print("Debe ingresar un porcentaje válido")
+        elif opcion == 10:
             print("\nSesión cerrada")
         else:
             print("\nOpción inválida")
+    return lista_canchas
                 
 def main():
     """
@@ -110,11 +121,11 @@ def main():
     lista_reservas=[]
     
     #datos del admin
-    datos_administrador=[
-        "Administrador",
-        "42456789",
-        "admin123"
-    ]
+    datos_administrador = {
+        "nombre": "Administrador",
+        "dni": "42456789",
+        "contraseña": "admin123"
+    }
     
     opcion=0
     
@@ -127,7 +138,11 @@ def main():
         print("3. Salir")
         print("================================")
         
-        opcion=int(input("Ingrese una opcion: "))
+        try:
+            opcion=int(input("Ingrese una opción: "))
+        except:
+            print("Debe ingresar un número")
+            opcion=0
         
         if opcion == 1: 
             opcion_cliente=0
@@ -138,8 +153,12 @@ def main():
                 print("3. Volver")
                 print("-------------------")
                 
-                opcion_cliente= int(input("Ingrese una opción: "))
-                
+                try:
+                    opcion_cliente= int(input("Ingrese una opción: "))
+                except:
+                    print("Debe ingresar un número")
+                    opcion_cliente=0
+                    
                 if opcion_cliente == 1:
                     clientes.registrar_clientes(lista_clientes)
                 elif opcion_cliente == 2:
@@ -154,7 +173,7 @@ def main():
         elif opcion == 2: 
             acceso_correcto=administrador.iniciar_sesion_admin(datos_administrador)
             if acceso_correcto:
-                menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista_reservas)
+                lista_canchas=menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista_reservas)
         elif opcion == 3:
             print("\n¡¡Gracias por utilizar nuestro sistema!!")
         else:
