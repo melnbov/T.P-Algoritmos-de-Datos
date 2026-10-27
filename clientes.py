@@ -1,4 +1,5 @@
 import re
+import json
 
 def es_numero(texto):
     """ Verifica que todos los caracteres ingresados sean números. 
@@ -40,7 +41,14 @@ def validar_nombre(nombre):
 
     if len(nombre) >= 3 and re.match(patron, nombre):
         return True
+    return False
 
+def validar_contraseña(contraseña):
+    """ Verifica que la contraseña tenga al menos 6 caracteres. 
+    Parámetros: contraseña: contraseña que se desea validar. 
+    Retorna: True si la contraseña tiene 6 o más caracteres. False si no cumple con el formato. """
+    if len(contraseña) >= 6:
+        return True
     return False
 
 def pedir_dato(mensaje, validador, mensaje_error):
@@ -58,7 +66,7 @@ def pedir_dato(mensaje, validador, mensaje_error):
                 raise ValueError(mensaje_error)
             return dato
         except ValueError as error:
-            print("Error en el dato ingresado")
+            print(error)
 
 def pedir_dni_nuevo(clientes):
     """ Pide un DNI y lo vuelve a pedir hasta que tenga formato valido y no este registrado. Usa excepciones ValueError para ambos casos.
@@ -77,34 +85,86 @@ def pedir_dni_nuevo(clientes):
         except ValueError as error:
             print(error)
 
-def registrar_clientes(clientes):
-    """ Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI y número de teléfono del cliente. 
-    Los datos son validados antes de realizar el registro. 
+def guardar_clientes(clientes):
+    """ 
+    Guarda la lista de clientes en el archivo clientes.json. 
     Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
-    Retorna: No retorna ningún valor. Agrega el nuevo cliente a la lista recibida como parámetro. """
+    Retorna: No retorna ningún valor. Escribe los datos en el archivo. 
+    """
+    archivo = open("clientes.json", "w")
+    json.dump(clientes, archivo, indent=4)
+    archivo.close()
+
+def cargar_clientes():
+    """ 
+    Lee los clientes guardados en el archivo clientes 
+    Retorna: Lista con los diccionarios de los clientes registrados. Lista vacía si el archivo no existe. 
+    """
+    try:
+        archivo = open("clientes.json", "r")
+        clientes = json.load(archivo)
+        archivo.close()
+        return clientes
+    except FileNotFoundError:
+        return []
+
+def registrar_clientes(clientes):
+    """ 
+    Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI, número de teléfono y contraseña del cliente. 
+    Cada dato se valida en el momento en que se ingresa, antes de pedir el siguiente. 
+    Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
+    Retorna: No retorna ningún valor. Agrega el nuevo cliente a la lista recibida como parámetro. 
+    """
     nombre = pedir_dato ("Ingrese su nombre:", validar_nombre, "Nombre invalido: minimo 3 letras, sin numeros ni simbolos")
     dni = pedir_dni_nuevo (clientes)
     telefono = pedir_dato("Ingrese su número de teléfono:", validar_telefono, "Telefono invalido: minimo 8 digitos numericos")
+    contraseña = pedir_dato("Cree su contraseña: ", validar_contraseña, "Contraseña invalida: minimo 6 caracteres")
 
     nuevo_cliente = {
     "nombre": nombre,
     "dni": dni,
-    "telefono": telefono
+    "telefono": telefono,
+    "contraseña": contraseña
     }
 
     clientes.append(nuevo_cliente)
+    guardar_clientes(clientes)
     print ("Cliente registrado correctamente")
 
 def iniciar_sesion_cliente(clientes):
-    """ Permite iniciar sesión a un cliente utilizando su DNI. Busca el DNI ingresado dentro de la lista de clientes registrados. 
-    Si encuentra una coincidencia, devuelve los datos del cliente. 
+    """ 
+    Permite iniciar sesión a un cliente utilizando su DNI y contraseña. 
+    Primero se solicita el DNI, con un máximo de 3 intentos para ingresar uno registrado. 
+    Luego se solicita la contraseña, también con un máximo de 3 intentos, sin volver a pedir el DNI. 
     Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
-    Retorna: El cliente encontrado si el DNI coincide. None si no existe un cliente registrado con ese DNI. """
-    dni = input("Ingrese su dni:")
-    for cliente in clientes:
-        if cliente["dni"] == dni:
-            print("Inicio de sesión exitoso")
-            print("Bienvenido/a: ", cliente["nombre"])
-            return cliente
-    print("No existe un cliente registrado con este DNI")
+    Retorna: El cliente encontrado si el DNI y la contraseña son correctos. None si se agotan los intentos. 
+    """
+    intentos_maximos = 3
+    cliente_encontrado = None
+
+    for intento in range(1, intentos_maximos + 1):
+        dni = input("Ingrese su dni:")
+        for cliente in clientes:
+            if cliente["dni"] == dni:
+                cliente_encontrado = cliente
+        if cliente_encontrado is not None:
+            break
+        restantes = intentos_maximos - intento 
+        if restantes > 0:
+            print("No existe un cliente registrado con este DNI. Intentos restantes:", restantes)
+    if cliente_encontrado is None:
+        print("Demasiados intentos fallidos")
+        return None
+
+    for intento in range(1, intentos_maximos +1):
+        contraseña = input("Ingrese su contraseña: ")
+        if contraseña == cliente_encontrado["contraseña"]:
+            print("Inicio de sesion exitoso")
+            print("Bienvenido/a", cliente_encontrado["nombre"])
+            return cliente_encontrado
+        restantes = intentos_maximos - intento
+        if restantes > 0:
+            print("Contraseña incorrecta. Intentos restantes:", restantes)
+    
+    print("Demasiados intentos fallidos")
     return None
