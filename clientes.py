@@ -1,4 +1,5 @@
 import re
+import json
 
 def es_numero(texto):
     """ Verifica que todos los caracteres ingresados sean números. 
@@ -84,6 +85,29 @@ def pedir_dni_nuevo(clientes):
         except ValueError as error:
             print(error)
 
+def guardar_clientes(clientes):
+    """ 
+    Guarda la lista de clientes en el archivo clientes.json. 
+    Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
+    Retorna: No retorna ningún valor. Escribe los datos en el archivo. 
+    """
+    archivo = open("clientes.json", "w")
+    json.dump(clientes, archivo, indent=4)
+    archivo.close()
+
+def cargar_clientes():
+    """ 
+    Lee los clientes guardados en el archivo clientes 
+    Retorna: Lista con los diccionarios de los clientes registrados. Lista vacía si el archivo no existe. 
+    """
+    try:
+        archivo = open("clientes.json", "r")
+        clientes = json.load(archivo)
+        archivo.close()
+        return clientes
+    except FileNotFoundError:
+        return []
+
 def registrar_clientes(clientes):
     """ 
     Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI, número de teléfono y contraseña del cliente. 
@@ -104,6 +128,7 @@ def registrar_clientes(clientes):
     }
 
     clientes.append(nuevo_cliente)
+    guardar_clientes(clientes)
     print ("Cliente registrado correctamente")
 
 def iniciar_sesion_cliente(clientes):
