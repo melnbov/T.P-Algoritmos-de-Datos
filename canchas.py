@@ -1,3 +1,17 @@
+import json
+
+def guardar_canchas(canchas):
+    with open("canchas.json", "w") as archivo:
+        json.dump(canchas, archivo, indent=4)
+
+def cargar_canchas():
+    try:
+        with open("canchas.json", "r") as archivo:
+            return json.load(archivo)
+
+    except FileNotFoundError:
+        return []
+
 def existe_cancha(canchas, numero): 
     """
     Verifica si un número de cancha ya se encuentra registrado.
@@ -135,6 +149,14 @@ def pedir_precio():
             print("Entrada inválida. Debe ingresar un precio numérico.")
     return precio
 
+def obtener_numeros_registrados(canchas):
+    numeros_registrados = set() #set() crea el conjunto vacío
+
+    for cancha in canchas:
+        numeros_registrados.add(cancha["numero"]) #.add() incorpora cada número. El conjunto guarda cada número una sola vez.
+
+    return numeros_registrados
+
 def registrar_cancha(canchas):
     """
     Permite registrar una o más canchas en el sistema.
@@ -151,6 +173,20 @@ def registrar_cancha(canchas):
 
     while opcion == "1":
 
+        #muestra los numeros de cancha ya registrados con conjuntos
+        numeros_registrados = obtener_numeros_registrados(canchas)
+
+        numeros_ordenados = list(numeros_registrados)
+        numeros_ordenados.sort()
+
+        print("Números de cancha ya registrados:", numeros_ordenados)
+
+        if len(numeros_registrados) == 20:
+            print("Ya están registrados todos los números del 1 al 20.")
+            
+            return
+
+
         # numero de cancha
         numero = pedir_numero_cancha(canchas)
 
@@ -165,6 +201,7 @@ def registrar_cancha(canchas):
 
         nueva_cancha = {"numero": numero, "piso": tipo_piso, "techo": tipo_techo, "precio": precio, "estado": "Disponible"}
         canchas.append(nueva_cancha)
+        guardar_canchas(canchas)
 
         print("Cancha registrada correctamente.")
 
@@ -363,6 +400,9 @@ def modificar_cancha(canchas):
 
             modificar_dato_cancha(canchas, pos)
 
+            guardar_canchas(canchas)    
+
+
 def eliminar_cancha(canchas):
     """
     Permite eliminar una cancha registrada.
@@ -400,6 +440,7 @@ def eliminar_cancha(canchas):
 
             if opcion == "1":
                 del canchas[pos]
+                guardar_canchas(canchas)
                 print("Cancha eliminada correctamente.")
             elif opcion == "2":
                 print("No se eliminó la cancha.")
@@ -469,5 +510,5 @@ def aumentar_precios(canchas, porcentaje):
             "estado": cancha["estado"]
             }, canchas
     ))
-
+    guardar_canchas(canchas_actualizadas)
     return canchas_actualizadas
