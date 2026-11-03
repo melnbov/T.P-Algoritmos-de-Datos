@@ -1,17 +1,31 @@
-administador = [
-    "administrador",
-    "42456789",
-    "admin123"
-]
+from functools import reduce
+
+administrador = {
+    "nombre": "administrador",
+    "dni": "42456789",
+    "contraseña": "admin123"
+}
 def iniciar_sesion_admin(administrador):
+    """ 
+    Permite iniciar sesión al administrador utilizando su DNI y contraseña. 
+    Primero solicita el DNI y lo vuelve a pedir hasta que coincida con el del administrador. 
+    Luego solicita la contraseña y la vuelve a pedir hasta que sea correcta, sin volver a pedir el DNI. 
+    Parámetros: administrador: diccionario con el nombre, DNI y contraseña del administrador. 
+    Retorna: True cuando el inicio de sesión es exitoso. 
+    """
     dni = input("Ingrese su DNI:")
+    while dni != administrador ["dni"]:
+        print("DNI incorrecto")
+        dni = input("Ingrese nuevamente su DNI:")
+
     contraseña = input("Ingrese su contraseña:")
-    if dni ==administador[1] and contraseña == administador[2]:
-        print("¡¡¡Inicio de sesión exitoso!!!")
-        print ("Bienvenido: ", administador[0])
-        return True
-    print("El DNI y la contraseña son incorrectos")
-    return False
+    while contraseña != administrador["contraseña"]:
+        print("Contraseña incorrecta")
+        contraseña = input("Ingrese nuevamente su contraseña:")
+
+    print("¡¡¡Inicio de sesion exitoso!!!")
+    print("Bienvenido: ", administrador["nombre"])
+    return True  
 
 def mostrar_todas_reservas(reservas, clientes):
     """
@@ -31,8 +45,8 @@ def mostrar_todas_reservas(reservas, clientes):
         nombre_cliente="Desconocido"
         
         for cliente in clientes:
-            if cliente[1]== reserva[1]:
-                nombre_cliente=cliente[0]
+            if cliente["dni"]== reserva[1]:
+                nombre_cliente=cliente["nombre"]
                 break
         
         print("Cliente: ", nombre_cliente)
@@ -56,8 +70,8 @@ def buscar_reservas_clientes(reservas, clientes):
     nombre_cliente="Desconocido"
     
     for cliente in clientes:
-        if cliente[1]==dni:
-            nombre_cliente= cliente[0]
+        if cliente["dni"]==dni:
+            nombre_cliente= cliente["nombre"]
             break
     
     print("---------------------")
@@ -89,7 +103,7 @@ def buscar_reservas_cancha(reservas, canchas):
     existe_cancha=False
     
     for cancha in canchas:
-        if cancha[0]== numero_cancha:
+        if cancha["numero"]== numero_cancha:
             existe_cancha=True
             break
         
@@ -117,9 +131,23 @@ def calcular_recaudacion(reservas):
     """
     Calcula la recaudación total de todas las reservas.
     """
-    recaudacion=0
+    precios = [reserva[5] for reserva in reservas]
+    recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
+    return recaudacion 
+
+def recaudacion_por_cancha(reservas):
+    """ 
+    Calcular cuánto dinero recaudó cada cancha
+    """
+    recaudacion={}
     for reserva in reservas:
-        recaudacion+= reserva[5]
+        numero_cancha=reserva[0]
+        precio=reserva[5]
+        
+        if numero_cancha not in recaudacion:
+            recaudacion[numero_cancha]=0
+            
+        recaudacion[numero_cancha]+=precio
     return recaudacion
 
 def cantidad_reservas(reservas):
@@ -136,20 +164,26 @@ def reservas_por_cliente(reservas, clientes):
         print("No hay clientes registrados")
         return
     
+    dnis_con_reservas=set()
+    for reserva in reservas:
+        dnis_con_reservas.add(reserva[1])
+        
     print("--------------------")
     print("Reservas por cliente")
     print("--------------------")
     
     for cliente in clientes:
-        cantidad=0
-        
-        for reserva in reservas:
-            if reserva[1]==cliente[1]:
-                cantidad+=1
 
-        print("Cliente: ", cliente[0])
-        print("DNI: ", cliente[1])
+        reservas_cliente = list(
+            filter(lambda reserva: reserva[1] == cliente["dni"], reservas)
+        )
+
+        cantidad = len(reservas_cliente)
+
+        print("Cliente: ", cliente["nombre"])
+        print("DNI: ", cliente["dni"])
         print("Cantidad de reservas: ", cantidad)
+    print("Calcular de clientes con reservas: ", len(dnis_con_reservas))
         
 def cancha_mas_reservada(reservas, canchas):
     """
@@ -159,7 +193,7 @@ def cancha_mas_reservada(reservas, canchas):
     if len(reservas)==0:
         print("No hay reservas registradas")
         return None
-    
+
     if len(canchas)==0:
         print("No hay canchas registradas")
         return None
@@ -171,12 +205,12 @@ def cancha_mas_reservada(reservas, canchas):
         cantidad=0
         
         for reserva in reservas:
-            if reserva[0]==cancha[0]:
+            if reserva[0]==cancha["numero"]:
                 cantidad+=1
         
         if cantidad > mayor_cantidad:
             mayor_cantidad= cantidad
-            cancha_mas_reservada_numero= cancha[0]
+            cancha_mas_reservada_numero= cancha["numero"]
     
     if cancha_mas_reservada_numero is None:
         print("Ninguna cancha tiene reservas")
@@ -203,8 +237,16 @@ def generar_reporte(reservas, clientes, canchas):
     print("Cantidad total de reservas: ", cantidad_reservas(reservas))
     print("Recaudación total: $ ", calcular_recaudacion(reservas))
     
-    print("Reservas por cliente:")
+    print("\nReservas por cliente:")
     reservas_por_cliente(reservas, clientes)
     
-    print("Cancha mas reservada:")
+    print("\nCancha mas reservada:")
     cancha_mas_reservada(reservas, canchas)
+    
+    print("\nRecaudación por cancha: ")
+    recaudacion=recaudacion_por_cancha(reservas)
+    
+    for cancha in recaudacion:
+        print("Cancha: ", cancha, "-Recaudacioón: $", recaudacion[cancha])
+        
+

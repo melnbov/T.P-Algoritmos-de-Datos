@@ -49,8 +49,7 @@ def elegir_tipo_piso():
     """
     Muestra los tipos de piso disponibles y solicita al usuario que seleccione uno.
     Valida que la opción ingresada sea correcta.
-    Retorna:
-        El tipo de piso seleccionado: Cemento, Cesped sintetico o Resina.
+    Retorna: El tipo de piso seleccionado: Cemento, Cesped sintetico o Resina.
     """
     print("Tipos de piso de las canchas: ")
     print("1. Cemento")
@@ -77,8 +76,7 @@ def elegir_tipo_techo():
     """
     Muestra los tipos de techo disponibles y solicita al usuario que seleccione uno.
     Valida que la opción ingresada sea correcta.
-    Retorna:
-        El tipo de techo seleccionado: Techada o No techada.
+    Retorna: El tipo de techo seleccionado: Techada o No techada.
     """
 
     print("Tipos de techo de las canchas: ")
@@ -94,10 +92,8 @@ def elegir_tipo_techo():
     match numero_tipo_techo:
         case "1":
             tipo_techo = "Techada"
-
         case "2":
             tipo_techo = "No techada"
-
     return tipo_techo
 
 def pedir_opcion():
@@ -448,7 +444,6 @@ def eliminar_cancha(canchas):
                 print("Opción inválida.")
 
 def obtener_canchas_disponibles(canchas):
-
     """
     Obtiene las canchas que se encuentran disponibles.
     Parámetros:
@@ -456,7 +451,6 @@ def obtener_canchas_disponibles(canchas):
     Retorna:
         Una lista con las canchas cuyo estado es Disponible.
     """
-
     disponibles = list(filter(lambda cancha: cancha["estado"] == "Disponible", canchas)) #va tomando cada cancha de canchas y pregunta:¿esta disponible? Si da True, la conserva. Si da False, no la incluye.
 
     return disponibles
@@ -473,22 +467,18 @@ def mostrar_disponibilidad(canchas):
 
     if len(canchas) == 0:
         print("No hay canchas registradas.")
-
     else:
         disponibles = obtener_canchas_disponibles(canchas)
 
         if len(disponibles) == 0:
             print("No hay canchas disponibles.")
-
         else:
             print("\n--- CANCHAS DISPONIBLES ---")
-
             for cancha in disponibles:
                 print("Cancha N°", cancha["numero"])
 
 
 def aumentar_precios(canchas, porcentaje):
-
     """
     Aumenta el precio por hora de todas las canchas registradas.
     Aplica el porcentaje de aumento indicado a cada cancha utilizando
