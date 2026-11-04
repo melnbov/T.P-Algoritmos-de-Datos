@@ -6,19 +6,26 @@ administrador = {
     "contraseña": "admin123"
 }
 def iniciar_sesion_admin(administrador):
-    intentos_maximos = 3
-    for intento in range(1, intentos_maximos +1):
-        dni = input("Ingrese su DNI:")
-        contraseña = input("Ingrese su contraseña:")
-        if dni ==administrador["dni"] and contraseña == administrador["contraseña"]:
-           print("¡¡¡Inicio de sesión exitoso!!!")
-           print ("Bienvenido: ", administrador["nombre"])
-           return True
-        restantes = intentos_maximos - intento
-        if restantes > 0:
-            print("El DNI y la constraseña son incorrectos. Intentos restantes:", restantes)
-    print("El DNI y la contraseña son incorrectos")
-    return False
+    """ 
+    Permite iniciar sesión al administrador utilizando su DNI y contraseña. 
+    Primero solicita el DNI y lo vuelve a pedir hasta que coincida con el del administrador. 
+    Luego solicita la contraseña y la vuelve a pedir hasta que sea correcta, sin volver a pedir el DNI. 
+    Parámetros: administrador: diccionario con el nombre, DNI y contraseña del administrador. 
+    Retorna: True cuando el inicio de sesión es exitoso. 
+    """
+    dni = input("Ingrese su DNI:")
+    while dni != administrador ["dni"]:
+        print("DNI incorrecto")
+        dni = input("Ingrese nuevamente su DNI:")
+
+    contraseña = input("Ingrese su contraseña:")
+    while contraseña != administrador["contraseña"]:
+        print("Contraseña incorrecta")
+        contraseña = input("Ingrese nuevamente su contraseña:")
+
+    print("¡¡¡Inicio de sesion exitoso!!!")
+    print("Bienvenido: ", administrador["nombre"])
+    return True  
 
 def mostrar_todas_reservas(reservas, clientes):
     """
