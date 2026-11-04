@@ -1,0 +1,9 @@
+[
+    {
+        "numero": 2,
+        "piso": "Cesped sintetico",
+        "techo": "No techada",
+        "precio": 1200.0,
+        "estado": "Disponible"
+    }
+]

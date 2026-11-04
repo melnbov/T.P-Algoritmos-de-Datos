@@ -118,7 +118,8 @@ def main():
     lista_canchas=[]
     
     #matriz de reservas
-    lista_reservas=[]
+    lista_reservas=reservas.cargar_reservas()
+    print("Reservas recuperadas:", lista_reservas)
     
     #datos del admin
     datos_administrador = {

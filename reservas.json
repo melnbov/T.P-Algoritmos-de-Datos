@@ -1,0 +1,11 @@
+[
+    {
+        "numero_cancha": 2,
+        "dni_cliente": "46646357",
+        "fecha": "2026-11-10",
+        "hora_inicio": 12,
+        "hora_fin": 14,
+        "precio_total": 2400.0,
+        "estado": "Cancelada"
+    }
+]

@@ -45,16 +45,16 @@ def mostrar_todas_reservas(reservas, clientes):
         nombre_cliente="Desconocido"
         
         for cliente in clientes:
-            if cliente["dni"]== reserva[1]:
+            if cliente["dni"]== reserva["dni_cliente"]:
                 nombre_cliente=cliente["nombre"]
                 break
         
         print("Cliente: ", nombre_cliente)
-        print("DNI: ", reserva[1])
-        print("Cancha: ", reserva[0])
-        print("Fecha: ", reserva[2])
-        print("Horario: ", reserva[3], "-", reserva[4])
-        print("Precio total: $", reserva[5])
+        print("DNI: ", reserva["dni_cliente"])
+        print("Cancha: ", reserva["numero_cancha"])
+        print("Fecha: ", reserva["fecha"])
+        print("Horario: ", reserva["hora_inicio"], "-", reserva["hora_fin"])
+        print("Precio total: $", reserva["precio_total"])
 
 def buscar_reservas_clientes(reservas, clientes):
     """
@@ -81,11 +81,11 @@ def buscar_reservas_clientes(reservas, clientes):
     for reserva in reservas:
         if reserva[1] == dni:
             print("Cliente:", nombre_cliente)
-            print("DNI:", reserva[1])
-            print("Cancha:", reserva[0])
-            print("Fecha:", reserva[2])
-            print("Horario:", reserva[3], "-", reserva[4])
-            print("Precio total: $", reserva[5])
+            print("DNI:", reserva["dni_cliente"])
+            print("Cancha:", reserva["numero_cancha"])
+            print("Fecha:", reserva["fecha"])
+            print("Horario:", reserva["hora_inicio"], "-", reserva["hora_fin"])
+            print("Precio total: $", reserva["precio_total"])
             encontrado = True
     if not encontrado:
         print("No se encontraron reservas para ese DNI")
@@ -118,11 +118,11 @@ def buscar_reservas_cancha(reservas, canchas):
     
     for reserva in reservas:
         if reserva[0] == numero_cancha:
-            print("Cliente:", reserva[0])
-            print("DNI:", reserva[1])
-            print("Fecha:", reserva[2])
-            print("Horario:", reserva[3], "-", reserva[4])
-            print("Precio total: $", reserva[5])
+            print("DNI:", reserva["dni_cliente"])
+            print("Cancha:", reserva["numero_cancha"])
+            print("Fecha:", reserva["fecha"])
+            print("Horario:", reserva["hora_inicio"], "-", reserva["hora_fin"])
+            print("Precio total: $", reserva["precio_total"])
             encontrado = True
     if not encontrado:
         print("La cancha existe, pero no tiene reservas")
@@ -141,8 +141,8 @@ def recaudacion_por_cancha(reservas):
     """
     recaudacion={}
     for reserva in reservas:
-        numero_cancha=reserva[0]
-        precio=reserva[5]
+        numero_cancha=reserva["numero_cancha"]
+        precio=reserva["precio_total"]
         
         if numero_cancha not in recaudacion:
             recaudacion[numero_cancha]=0
@@ -166,7 +166,7 @@ def reservas_por_cliente(reservas, clientes):
     
     dnis_con_reservas=set()
     for reserva in reservas:
-        dnis_con_reservas.add(reserva[1])
+        dnis_con_reservas.add(reserva["dni_cliente"])
         
     print("--------------------")
     print("Reservas por cliente")
@@ -175,7 +175,7 @@ def reservas_por_cliente(reservas, clientes):
     for cliente in clientes:
 
         reservas_cliente = list(
-            filter(lambda reserva: reserva[1] == cliente["dni"], reservas)
+            filter(lambda reserva: reserva["dni_cliente"] == cliente["dni"], reservas)
         )
 
         cantidad = len(reservas_cliente)
