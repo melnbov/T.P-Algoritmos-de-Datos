@@ -7,5 +7,14 @@
         "hora_fin": 14,
         "precio_total": 2400.0,
         "estado": "Cancelada"
+    },
+    {
+        "numero_cancha": 3,
+        "dni_cliente": "46646357",
+        "fecha": "2026-11-05",
+        "hora_inicio": 12,
+        "hora_fin": 15,
+        "precio_total": 6300.0,
+        "estado": "Activa"
     }
 ]

@@ -54,7 +54,7 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
     """
         
     opcion=0
-    while opcion !=10:
+    while opcion !=11:
         print("\n=====Menú Administrador========")
         print("1. Registrar cancha")
         print("2. Consultar canchas")
@@ -65,7 +65,8 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         print("7. Buscar reservas por cancha")
         print("8. Generar reporte")
         print("9. Aumentar precios")
-        print("10. Cerrar sesión")
+        print("10. Ver canchas nunca reservadas")
+        print("11. Cerrar sesión")
         print("=================================")
             
         try:
@@ -101,6 +102,8 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
             except ValueError:
                 print("Debe ingresar un porcentaje válido")
         elif opcion == 10:
+            administrador.mostrar_canchas_nunca_reservadas(lista_reservas, lista_canchas)
+        elif opcion==11:
             print("\nSesión cerrada")
         else:
             print("\nOpción inválida")

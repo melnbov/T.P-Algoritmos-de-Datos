@@ -1,9 +1,16 @@
 [
     {
         "numero": 2,
-        "piso": "Cesped sintetico",
+        "piso": "Cemento",
         "techo": "No techada",
-        "precio": 1200.0,
+        "precio": 23000.0,
+        "estado": "Disponible"
+    },
+    {
+        "numero": 3,
+        "piso": "Resina",
+        "techo": "Techada",
+        "precio": 2100.0,
         "estado": "Disponible"
     }
 ]
