@@ -112,10 +112,10 @@ def main():
     como cliente o como administrador.
     """
     #matriz de clientes
-    lista_clientes=[]
+    lista_clientes = clientes.cargar_clientes()
     
     #matriz de canchas
-    lista_canchas=[]
+    lista_canchas = canchas.cargar_canchas()
     
     #matriz de reservas
     lista_reservas=[]
