@@ -121,7 +121,7 @@ def main():
     lista_canchas = canchas.cargar_canchas()
     
     #matriz de reservas
-    lista_reservas=[]
+    lista_reservas=reservas.cargar_reservas()
     
     #datos del admin
     datos_administrador = {
