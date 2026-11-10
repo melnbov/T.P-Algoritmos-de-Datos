@@ -1,0 +1,37 @@
+[
+    {
+        "numero": 2,
+        "piso": "Cemento",
+        "techo": "No techada",
+        "precio": 25760.000000000004,
+        "estado": "Disponible"
+    },
+    {
+        "numero": 3,
+        "piso": "Resina",
+        "techo": "Techada",
+        "precio": 2352.0,
+        "estado": "Disponible"
+    },
+    {
+        "numero": 4,
+        "piso": "Cemento",
+        "techo": "Techada",
+        "precio": 2800.0000000000005,
+        "estado": "Disponible"
+    },
+    {
+        "numero": 5,
+        "piso": "Cemento",
+        "techo": "No techada",
+        "precio": 6496.000000000001,
+        "estado": "No disponible"
+    },
+    {
+        "numero": 1,
+        "piso": "Cesped sintetico",
+        "techo": "Techada",
+        "precio": 6496.000000000001,
+        "estado": "Disponible"
+    }
+]
