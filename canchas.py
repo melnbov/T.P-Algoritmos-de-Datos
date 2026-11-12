@@ -551,7 +551,7 @@ def aumentar_precios(canchas, porcentaje):
             "numero": cancha["numero"],
             "piso":   cancha["piso"],
             "techo":  cancha["techo"],
-            "precio": cancha["precio"] * (1 + porcentaje / 100),
+            "precio": round(cancha["precio"] * (1 + porcentaje / 100), 2),
             "estado": cancha["estado"]
             }, canchas
     ))
