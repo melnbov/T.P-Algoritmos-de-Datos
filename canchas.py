@@ -1,10 +1,27 @@
 import json
 
 def guardar_canchas(canchas):
+    """
+    Guarda las canchas registradas en un archivo JSON.
+    Permite conservar la información de las canchas
+    para utilizarla cuando se vuelva a iniciar el programa.
+    Parámetros:
+        canchas: lista de diccionarios que contiene las canchas registradas.
+    Retorna:
+        No retorna ningún valor. Guarda la información en el archivo canchas.json.
+    """
     with open("canchas.json", "w") as archivo:
         json.dump(canchas, archivo, indent=4)
 
 def cargar_canchas():
+    """
+    Carga las canchas registradas desde un archivo JSON.
+    Si el archivo existe, recupera la información almacenada.
+    Si el archivo no existe, devuelve una lista vacía.
+    Retorna:
+        Una lista con las canchas guardadas en el archivo canchas.json,
+        o una lista vacía si el archivo no existe.
+    """
     try:
         with open("canchas.json", "r") as archivo:
             return json.load(archivo)
@@ -29,6 +46,13 @@ def existe_cancha(canchas, numero):
     return existe
 
 def pedir_numero():
+    """
+    Solicita al usuario un número de cancha entre 1 y 20.
+    Valida que el número ingresado sea entero y esté dentro
+    del rango permitido. Si es inválido, vuelve a solicitarlo.
+    Retorna:
+        El número de cancha ingresado y validado.
+    """
     numero_valido = False
 
     while not numero_valido:
@@ -97,6 +121,13 @@ def elegir_tipo_techo():
     return tipo_techo
 
 def pedir_opcion():
+    """
+    Pregunta al usuario si desea registrar una cancha.
+    Valida que la opción ingresada sea 1 (Sí) o 2 (No).
+    Si la opción es inválida, vuelve a solicitarla.
+    Retorna:
+        La opción seleccionada por el usuario.
+    """
     opcion = input("¿Quiere registrar una cancha? Ingrese 1 para SI y 2 para NO: ")
 
     while opcion != "1" and opcion != "2":
@@ -105,7 +136,16 @@ def pedir_opcion():
     return opcion
 
 def pedir_numero_cancha(canchas):
-        
+    """
+    Solicita un número para registrar una nueva cancha.
+    Valida que sea un número entero entre 1 y 20 y verifica
+    que no se encuentre registrado previamente.
+    Si el número es inválido o ya existe, vuelve a solicitarlo.
+    Parámetros:
+        canchas: lista de diccionarios que contiene las canchas registradas.
+    Retorna:
+        El número de cancha validado y disponible para registrar.
+    """
     numero_valido = False
 
     while not numero_valido:
@@ -129,7 +169,13 @@ def pedir_numero_cancha(canchas):
     return numero
 
 def pedir_precio():
-    
+    """
+    Solicita al usuario el precio por hora de una cancha.
+    Valida que el precio ingresado sea numérico y mayor que cero.
+    Si el precio es inválido, vuelve a solicitarlo.
+    Retorna:
+        El precio por hora ingresado y validado.
+    """
     precio_valido = False
 
     while not precio_valido:
@@ -146,6 +192,15 @@ def pedir_precio():
     return precio
 
 def obtener_numeros_registrados(canchas):
+    """
+    Obtiene los números de todas las canchas registradas.
+    Utiliza un conjunto para almacenar los números de cancha,
+    evitando que haya elementos repetidos.
+    Parámetros:
+        canchas: lista de diccionarios que contiene las canchas registradas.
+    Retorna:
+        Un conjunto con los números de las canchas registradas.
+    """
     numeros_registrados = set() #set() crea el conjunto vacío
 
     for cancha in canchas:
@@ -315,7 +370,7 @@ def mostrar_datos_cancha(cancha):
     """
     Muestra todos los datos correspondientes a una cancha.
     Parámetros:
-        cancha: lista que contiene el número, tipo de piso, tipo de techo,
+        cancha: diccionario que contiene el número, tipo de piso, tipo de techo,
         precio por hora y estado de una cancha.
     Retorna:
         No retorna ningún valor. Muestra los datos en pantalla.
