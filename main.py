@@ -6,12 +6,6 @@ import reservas
 def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
     """ 
     Muestra el menú de opciones disponibles para un cliente.
-
-    Parámetros:
-    cliente_actual: datos del cliente que inició sesión.
-    lista_clientes: matriz que contiene los clientes registrados.
-    lista_canchas: matriz que contiene las canchas registradas.
-    lista_reservas: matriz que contiene las reservas registradas.
     """
     opcion=0
     while opcion!=5:
@@ -25,7 +19,7 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
         
         try:
             opcion=int(input("Ingrese una opción: "))
-        except:
+        except ValueError:
             print("Debe ingresar un número")
             opcion=0
         
@@ -45,16 +39,10 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
 def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista_reservas):
     """
     Muestra el menú de opciones disponibles para el administrador.
-
-    Parámetros:
-    datos_administrador: datos del administrador.
-    lista_clientes: matriz que contiene los clientes.
-    lista_canchas: matriz que contiene las canchas.
-    lista_reservas: matriz que contiene las reservas.
     """
         
     opcion=0
-    while opcion !=10:
+    while opcion !=11:
         print("\n=====Menú Administrador========")
         print("1. Registrar cancha")
         print("2. Consultar canchas")
@@ -65,12 +53,13 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         print("7. Buscar reservas por cancha")
         print("8. Generar reporte")
         print("9. Aumentar precios")
-        print("10. Cerrar sesión")
+        print("10. Ver canchas nunca reservadas")
+        print("11. Cerrar sesión")
         print("=================================")
             
         try:
             opcion=int(input("Ingrese una opción: "))
-        except:
+        except ValueError:
             print("Debe ingresar un número")
             opcion=0
             
@@ -81,7 +70,7 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         elif opcion == 3:
             canchas.modificar_cancha(lista_canchas)
         elif opcion == 4: 
-            canchas.eliminar_cancha(lista_canchas)
+            canchas.eliminar_cancha(lista_canchas, lista_reservas)
         elif opcion == 5: 
             administrador.mostrar_todas_reservas(lista_reservas, lista_clientes)
         elif opcion == 6:
@@ -101,6 +90,8 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
             except ValueError:
                 print("Debe ingresar un porcentaje válido")
         elif opcion == 10:
+            administrador.mostrar_canchas_nunca_reservadas(lista_reservas, lista_canchas)
+        elif opcion==11:
             print("\nSesión cerrada")
         else:
             print("\nOpción inválida")
@@ -112,13 +103,13 @@ def main():
     como cliente o como administrador.
     """
     #matriz de clientes
-    lista_clientes=[]
+    lista_clientes = clientes.cargar_clientes()
     
     #matriz de canchas
-    lista_canchas=[]
+    lista_canchas = canchas.cargar_canchas()
     
     #matriz de reservas
-    lista_reservas=[]
+    lista_reservas=reservas.cargar_reservas()
     
     #datos del admin
     datos_administrador = {
@@ -140,7 +131,7 @@ def main():
         
         try:
             opcion=int(input("Ingrese una opción: "))
-        except:
+        except ValueError:
             print("Debe ingresar un número")
             opcion=0
         
@@ -155,7 +146,7 @@ def main():
                 
                 try:
                     opcion_cliente= int(input("Ingrese una opción: "))
-                except:
+                except ValueError:
                     print("Debe ingresar un número")
                     opcion_cliente=0
                     
@@ -179,4 +170,5 @@ def main():
         else:
             print("\nOpcion inválida")
             
-main()
+if __name__ == "__main__":
+    main()

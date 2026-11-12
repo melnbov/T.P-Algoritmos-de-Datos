@@ -1,0 +1,29 @@
+===============
+REPORTE GENERAL
+===============
+Cantidad total de reservas: 1
+Recaudación total: $ 2500.00
+
+RESERVAS POR CLIENTE
+Cliente: gio
+DNI: 47755459
+Cantidad de reservas: 1
+--------------------
+Cliente: gio
+DNI: 47554598
+Cantidad de reservas: 0
+--------------------
+Cantidad de clientes con reservas: 1
+
+CANCHA MÁS RESERVADA
+Cancha: 1
+Cantidad de reservas: 1
+
+RECAUDACIÓN POR CANCHA
+Cancha 1 - Recaudación: $ 2500.00
+Cancha 2 - Recaudación: $ 0.00
+Cancha 3 - Recaudación: $ 0.00
+
+CANCHAS QUE NUNCA FUERON RESERVADAS
+Cancha: 2
+Cancha: 3

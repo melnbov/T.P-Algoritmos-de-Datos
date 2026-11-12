@@ -1,6 +1,25 @@
 import re
+import os
 import json
 
+RUTA_CLIENTES = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "clientes.json"
+)
+
+def guardar_clientes(clientes):
+    """Guarda todos los cleintes en el archivo clientes.json"""
+    with open (RUTA_CLIENTES,"w",encoding="utf-8")as archivo:
+        json.dump(clientes,archivo,indent=4,ensure_ascii=False)
+
+def cargar_clientes():
+    """Carga las reservas almacenadas en cliente.json. Si el archivo no existe, retorna una lista vacia"""
+    try:
+        with open(RUTA_CLIENTES,"r",encoding="utf-8") as archivo:
+            return json.load(archivo)
+    except FileNotFoundError:
+        return[]
+    
 def es_numero(texto):
     """ Verifica que todos los caracteres ingresados sean números. 
     Parámetros: texto: cadena de caracteres que se desea verificar. 
@@ -85,33 +104,11 @@ def pedir_dni_nuevo(clientes):
         except ValueError as error:
             print(error)
 
-def guardar_clientes(clientes):
-    """ 
-    Guarda la lista de clientes en el archivo clientes.json. 
-    Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
-    Retorna: No retorna ningún valor. Escribe los datos en el archivo. 
-    """
-    archivo = open("clientes.json", "w")
-    json.dump(clientes, archivo, indent=4)
-    archivo.close()
-
-def cargar_clientes():
-    """ 
-    Lee los clientes guardados en el archivo clientes 
-    Retorna: Lista con los diccionarios de los clientes registrados. Lista vacía si el archivo no existe. 
-    """
-    try:
-        archivo = open("clientes.json", "r")
-        clientes = json.load(archivo)
-        archivo.close()
-        return clientes
-    except FileNotFoundError:
-        return []
-
 def registrar_clientes(clientes):
     """ 
     Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI, número de teléfono y contraseña del cliente. 
     Cada dato se valida en el momento en que se ingresa, antes de pedir el siguiente. 
+    Al finalizar, guarda la lista en el archivo JSON y muestra la contraseña enmascarada con asteriscos. 
     Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
     Retorna: No retorna ningún valor. Agrega el nuevo cliente a la lista recibida como parámetro. 
     """
@@ -129,8 +126,10 @@ def registrar_clientes(clientes):
 
     clientes.append(nuevo_cliente)
     guardar_clientes(clientes)
+    contraseña_oculta = re.sub(r".", "*", contraseña)
+    print("Contraseña registrada:", contraseña_oculta)
     print ("Cliente registrado correctamente")
-
+    
 def iniciar_sesion_cliente(clientes):
     """ 
     Permite iniciar sesión a un cliente utilizando su DNI y contraseña. 

@@ -1,0 +1,11 @@
+[
+    {
+        "numero_cancha": 1,
+        "dni_cliente": "47755459",
+        "fecha": "2026-11-16",
+        "hora_inicio": 10,
+        "hora_fin": 11,
+        "precio_total": 2500.0,
+        "estado": "Activa"
+    }
+]
