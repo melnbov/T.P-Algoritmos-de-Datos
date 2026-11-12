@@ -112,6 +112,7 @@ def registrar_clientes(clientes):
     """ 
     Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI, número de teléfono y contraseña del cliente. 
     Cada dato se valida en el momento en que se ingresa, antes de pedir el siguiente. 
+    Al finalizar, guarda la lista en el archivo JSON y muestra la contraseña enmascarada con asteriscos. 
     Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
     Retorna: No retorna ningún valor. Agrega el nuevo cliente a la lista recibida como parámetro. 
     """
@@ -129,8 +130,10 @@ def registrar_clientes(clientes):
 
     clientes.append(nuevo_cliente)
     guardar_clientes(clientes)
+    contraseña_oculta = re.sub(r".", "*", contraseña)
+    print("Contraseña registrada:", contraseña_oculta)
     print ("Cliente registrado correctamente")
-
+    
 def iniciar_sesion_cliente(clientes):
     """ 
     Permite iniciar sesión a un cliente utilizando su DNI y contraseña. 
