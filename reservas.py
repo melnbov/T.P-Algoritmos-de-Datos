@@ -81,24 +81,27 @@ def seleccionar_dia(dias):
             return dias[opcion - 1]
         print("La opcion ingresada no es valida")
 
-def validar_horario(horario_entrada,horario_salida):
-    """Verifica que el horario este dentro del horario de funcionamiento y que la entrada sea menor que la salida
-    """
-    validado = False
-    while validado == False:
+
+def validar_horario(horario_entrada, horario_salida):
+    """Verifica que el horario esté entre las 9 y las 23."""
+
+    while True:
         if horario_entrada < 9 or horario_salida > 23:
             print("El horario debe estar entre las 9 y las 23.")
         elif horario_entrada >= horario_salida:
-            print("El horario de entrada debe ser menor que al horario de salida")
+            print("La hora de entrada debe ser menor que la de salida.")
         else:
             print("Horarios ingresados correctamente")
-            validado=True
+            return horario_entrada, horario_salida
 
-        if validado == False:
-            horario_entrada=int(input("Ingrese nuevamente la hora de entrada: "))
-            horario_salida=int(input("Ingrese nuevamente la hora de salida: "))
+        try:
+            horario_entrada = int(input("Ingrese nuevamente la hora de entrada: "))
+            horario_salida = int(input("Ingrese nuevamente la hora de salida: "))
+        except ValueError:
+            print("Debe ingresar números enteros.")
+            horario_entrada = 0
+            horario_salida = 0
 
-    return horario_entrada,horario_salida
 
 def seleccionar_horario():
     """Solicita al usuario el horario de entrada y salida y valida los datos ingresados

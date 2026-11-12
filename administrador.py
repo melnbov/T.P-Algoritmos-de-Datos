@@ -121,14 +121,14 @@ def buscar_reservas_cancha(reservas, canchas):
     if not reservas_encontradas:
         print("La cancha existe, pero no tiene reservas")
         return
-    
+
     for reserva in reservas_encontradas:
         print("DNI:", reserva["dni_cliente"])
         print("Cancha:", reserva["numero_cancha"])
         print("Fecha:", reserva["fecha"])
         print("Horario:", reserva["hora_inicio"], "-", reserva["hora_fin"])
         print("Precio total: $", reserva["precio_total"])
-
+    
         
 def calcular_recaudacion(reservas):
     """
@@ -348,6 +348,7 @@ def generar_reporte(reservas, clientes, canchas):
 
     lineas.append("")
     lineas.append("CANCHAS QUE NUNCA FUERON RESERVADAS")
+
     numeros_reservados = [reserva["numero_cancha"] for reserva in reservas]
     hay_sin_reservas = False
 
