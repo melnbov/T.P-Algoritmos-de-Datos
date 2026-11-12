@@ -70,7 +70,7 @@ def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista
         elif opcion == 3:
             canchas.modificar_cancha(lista_canchas)
         elif opcion == 4: 
-            canchas.eliminar_cancha(lista_canchas)
+            canchas.eliminar_cancha(lista_canchas, lista_reservas)
         elif opcion == 5: 
             administrador.mostrar_todas_reservas(lista_reservas, lista_clientes)
         elif opcion == 6:

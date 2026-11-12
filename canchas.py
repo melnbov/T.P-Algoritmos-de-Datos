@@ -413,7 +413,7 @@ def modificar_dato_cancha(canchas, pos):
         case "2":
             canchas[pos]["techo"] = elegir_tipo_techo()
         case "3":
-            canchas[pos]["precio"] = float(input("Ingrese el nuevo precio por hora: "))
+            canchas[pos]["precio"] = pedir_precio()
         case "4":
             canchas[pos]["estado"] = elegir_estado()
         case "5":
@@ -458,15 +458,17 @@ def modificar_cancha(canchas):
             guardar_canchas(canchas)    
 
 
-def eliminar_cancha(canchas):
+
+def eliminar_cancha(canchas, reservas):
     """
-    Permite eliminar una cancha registrada.
+    Permite eliminar una cancha registrada y sus reservas asociadas.
     Solicita el número de cancha, verifica que exista, muestra sus datos
     y pide confirmación antes de eliminarla.
     Parámetros:
         canchas: lista que contiene las canchas registradas.
+        reservas: lista que contiene las reservas realizadas.
     Retorna:
-        No retorna ningún valor. Puede eliminar una cancha de la lista.
+        No retorna ningún valor. Puede eliminar una cancha y sus reservas.
     """
 
     if len(canchas) == 0:
@@ -494,13 +496,28 @@ def eliminar_cancha(canchas):
             opcion = input("¿Está seguro que desea eliminar esta cancha? Ingrese 1 para SI y 2 para NO: ")
 
             if opcion == "1":
+
+                # Elimino las reservas asociadas a la cancha
+                reservas[:] = list(filter(
+                    lambda reserva: reserva["numero_cancha"] != numero_a_eliminar,
+                    reservas
+                ))
+
+                # Guardo las reservas actualizadas
+                from reservas import guardar_reservas
+                guardar_reservas(reservas)
+
+                # Elimino la cancha
                 del canchas[pos]
                 guardar_canchas(canchas)
-                print("Cancha eliminada correctamente.")
+
+                print("Cancha y reservas asociadas eliminadas correctamente.")
+
             elif opcion == "2":
                 print("No se eliminó la cancha.")
             else:
                 print("Opción inválida.")
+
 
 def obtener_canchas_disponibles(canchas):
     """
