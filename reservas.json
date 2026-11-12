@@ -16,5 +16,24 @@
         "hora_fin": 15,
         "precio_total": 6300.0,
         "estado": "Activa"
+
+    },
+    {
+        "numero_cancha": 1,
+        "dni_cliente": "47755459",
+        "fecha": "2026-11-11",
+        "hora_inicio": 10,
+        "hora_fin": 12,
+        "precio_total": 12992.000000000002,
+        "estado": "Activa"
+    },
+    {
+        "numero_cancha": 4,
+        "dni_cliente": "47755459",
+        "fecha": "2026-11-09",
+        "hora_inicio": 12,
+        "hora_fin": 15,
+        "precio_total": 8400.000000000002,
+        "estado": "Cancelada"
     }
 ]

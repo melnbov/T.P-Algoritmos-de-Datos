@@ -1,23 +1,28 @@
 ===============
 REPORTE GENERAL
 ===============
-Cantidad total de reservas: 1
-Recaudación total: $ 5000.00
+Cantidad total de reservas: 2
+Recaudación total: $ 8700.00
 
 RESERVAS POR CLIENTE
-Cliente: gio
-DNI: 47755459
-Cantidad de reservas: 1
+Cliente: Melina
+DNI: 46646357
+Cantidad de reservas: 2
 --------------------
 Cantidad de clientes con reservas: 1
 
 CANCHA MÁS RESERVADA
-Cancha: 1
+Cancha: 2
 Cantidad de reservas: 1
 
 RECAUDACIÓN POR CANCHA
-Cancha 1 - Recaudación: $ 5000.00
-Cancha 2 - Recaudación: $ 0.00
+Cancha 1 - Recaudación: $ 0.00
+Cancha 2 - Recaudación: $ 2400.00
+Cancha 3 - Recaudación: $ 6300.00
+Cancha 4 - Recaudación: $ 0.00
+Cancha 5 - Recaudación: $ 0.00
 
 CANCHAS QUE NUNCA FUERON RESERVADAS
-Cancha: 2
+Cancha: 4
+Cancha: 5
+Cancha: 1
