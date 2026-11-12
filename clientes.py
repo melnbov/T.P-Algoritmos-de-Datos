@@ -1,6 +1,25 @@
 import re
+import os
 import json
 
+RUTA_CLIENTES = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "clientes.json"
+)
+
+def guardar_clientes(clientes):
+    """Guarda todos los cleintes en el archivo clientes.json"""
+    with open (RUTA_CLIENTES,"w",encoding="utf-8")as archivo:
+        json.dump(clientes,archivo,indent=4,ensure_ascii=False)
+
+def cargar_reservas():
+    """Carga las reservas almacenadas en cliente.json. Si el archivo no existe, retorna una lista vacia"""
+    try:
+        with open(RUTA_CLIENTES,"r",encoding="utf-8") as archivo:
+            return json.load(archivo)
+    except FileNotFoundError:
+        return[]
+    
 def es_numero(texto):
     """ Verifica que todos los caracteres ingresados sean números. 
     Parámetros: texto: cadena de caracteres que se desea verificar. 

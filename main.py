@@ -6,12 +6,6 @@ import reservas
 def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
     """ 
     Muestra el menú de opciones disponibles para un cliente.
-
-    Parámetros:
-    cliente_actual: datos del cliente que inició sesión.
-    lista_clientes: matriz que contiene los clientes registrados.
-    lista_canchas: matriz que contiene las canchas registradas.
-    lista_reservas: matriz que contiene las reservas registradas.
     """
     opcion=0
     while opcion!=5:
@@ -45,12 +39,6 @@ def menu_cliente(cliente_actual, lista_clientes, lista_canchas, lista_reservas):
 def menu_administrador(datos_administrador, lista_clientes, lista_canchas, lista_reservas):
     """
     Muestra el menú de opciones disponibles para el administrador.
-
-    Parámetros:
-    datos_administrador: datos del administrador.
-    lista_clientes: matriz que contiene los clientes.
-    lista_canchas: matriz que contiene las canchas.
-    lista_reservas: matriz que contiene las reservas.
     """
         
     opcion=0

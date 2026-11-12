@@ -124,8 +124,10 @@ def buscar_reservas_cancha(reservas, canchas):
         print("La cancha existe, pero no tiene reservas")
         return
     
+
     for reserva in reservas_encontradas:
         if reserva["numero_cancha"] == numero_cancha:
+
 
             print("DNI:", reserva["dni_cliente"])
             print("Cancha:", reserva["numero_cancha"])
@@ -334,6 +336,7 @@ def generar_reporte(reservas, clientes, canchas):
 
     lineas.append("")
     lineas.append("CANCHAS QUE NUNCA FUERON RESERVADAS")
+
     numeros_reservados = [reserva["numero_cancha"] for reserva in reservas]
     hay_sin_reservas = False
 
