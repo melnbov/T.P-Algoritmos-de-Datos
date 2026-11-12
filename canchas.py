@@ -1,5 +1,10 @@
+import os
 import json
 
+RUTA_CANCHAS = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "canchas.json"
+)
 def guardar_canchas(canchas):
     """
     Guarda las canchas registradas en un archivo JSON.
@@ -10,8 +15,8 @@ def guardar_canchas(canchas):
     Retorna:
         No retorna ningún valor. Guarda la información en el archivo canchas.json.
     """
-    with open("canchas.json", "w") as archivo:
-        json.dump(canchas, archivo, indent=4)
+    with open(RUTA_CANCHAS, "w", encoding="utf-8") as archivo:
+        json.dump(canchas, archivo, indent=4, ensure_ascii=False)
 
 def cargar_canchas():
     """
@@ -23,9 +28,8 @@ def cargar_canchas():
         o una lista vacía si el archivo no existe.
     """
     try:
-        with open("canchas.json", "r") as archivo:
+        with open(RUTA_CANCHAS, "r", encoding="utf-8") as archivo:
             return json.load(archivo)
-
     except FileNotFoundError:
         return []
 

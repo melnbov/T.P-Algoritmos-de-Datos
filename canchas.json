@@ -3,28 +3,14 @@
         "numero": 2,
         "piso": "Cemento",
         "techo": "No techada",
-<<<<<<< HEAD
         "precio": 23000.0,
-=======
-        "precio": 25760.000000000004,
->>>>>>> origin/feature-reportes
         "estado": "Disponible"
     },
     {
         "numero": 3,
         "piso": "Resina",
         "techo": "Techada",
-<<<<<<< HEAD
-        "precio": 2100.0,
-=======
         "precio": 2352.0,
-        "estado": "Disponible"
-    },
-    {
-        "numero": 4,
-        "piso": "Cemento",
-        "techo": "Techada",
-        "precio": 2800.0000000000005,
         "estado": "Disponible"
     },
     {
@@ -32,14 +18,20 @@
         "piso": "Cemento",
         "techo": "No techada",
         "precio": 6496.000000000001,
-        "estado": "No disponible"
+        "estado": "Disponible"
     },
     {
         "numero": 1,
         "piso": "Cesped sintetico",
         "techo": "Techada",
         "precio": 6496.000000000001,
->>>>>>> origin/feature-reportes
+        "estado": "Disponible"
+    },
+    {
+        "numero": 17,
+        "piso": "Cemento",
+        "techo": "Techada",
+        "precio": 2300.0,
         "estado": "Disponible"
     }
 ]
