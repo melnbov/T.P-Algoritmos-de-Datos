@@ -80,18 +80,16 @@ def buscar_reservas_clientes(reservas, clientes):
     print("Reservas del cliente")
     print("---------------------")
     
-    encontrado=False
-    for reserva in reservas:
-        if reserva["dni_cliente"] == dni:
+    if len(reservas_encontradas) == 0:
+        print("No se encontraron reservas para ese DNI")
+    else:
+        for reserva in reservas_encontradas:
             print("Cliente:", nombre_cliente)
             print("DNI:", reserva["dni_cliente"])
             print("Cancha:", reserva["numero_cancha"])
             print("Fecha:", reserva["fecha"])
             print("Horario:", reserva["hora_inicio"], "-", reserva["hora_fin"])
             print("Precio total: $", reserva["precio_total"])
-            encontrado = True
-    if not encontrado:
-        print("No se encontraron reservas para ese DNI")
 
 def buscar_reservas_cancha(reservas, canchas):
     """
@@ -125,25 +123,41 @@ def buscar_reservas_cancha(reservas, canchas):
         return
     
     for reserva in reservas_encontradas:
-        if reserva["numero_cancha"] == numero_cancha:
-
-            print("DNI:", reserva["dni_cliente"])
-            print("Cancha:", reserva["numero_cancha"])
-            print("Fecha:", reserva["fecha"])
-            print("Horario:", reserva["hora_inicio"], "-", reserva["hora_fin"])
-            print("Precio total: $", reserva["precio_total"])
-            encontrado = True
-    if not encontrado:
-        print("La cancha existe, pero no tiene reservas")
+        print("DNI:", reserva["dni_cliente"])
+        print("Cancha:", reserva["numero_cancha"])
+        print("Fecha:", reserva["fecha"])
+        print("Horario:", reserva["hora_inicio"], "-", reserva["hora_fin"])
+        print("Precio total: $", reserva["precio_total"])
 
         
 def calcular_recaudacion(reservas):
     """
-    Calcula la recaudación total de todas las reservas.
+    Calcula la recaudación total de las reservas activas.
+
+    Recorre la lista de reservas, selecciona únicamente aquellas
+    cuyo estado sea "Activa" y suma sus precios totales.
+
+    Parámetros:
+        reservas (list): Lista de diccionarios con los datos de las reservas.
+
+    Retorna:
+        float: Importe total recaudado por las reservas activas.
     """
-    precios = [reserva["precio_total"] for reserva in reservas]
-    recaudacion = reduce(lambda total, precio: total + precio, precios, 0)
-    return recaudacion 
+    reservas_activas = [
+        reserva for reserva in reservas
+        if reserva["estado"] == "Activa"
+    ]
+
+    precios = [
+        reserva["precio_total"]
+        for reserva in reservas_activas
+    ]
+
+    return reduce(
+        lambda total, precio: total + precio,
+        precios,
+        0
+    )
 
 
 def recaudacion_por_cancha(reservas, canchas):
@@ -154,14 +168,14 @@ def recaudacion_por_cancha(reservas, canchas):
         recaudacion[cancha["numero"]] = 0
 
     for reserva in reservas:
-        numero_cancha=reserva["numero_cancha"]
-        precio=reserva["precio_total"]
-        
+        if reserva["estado"] == "Activa":
+            numero_cancha = reserva["numero_cancha"]
+            precio = reserva["precio_total"]
 
-        if numero_cancha not in recaudacion:
-            recaudacion[numero_cancha] = 0
+            if numero_cancha not in recaudacion:
+                recaudacion[numero_cancha] = 0
 
-        recaudacion[numero_cancha] += precio
+            recaudacion[numero_cancha] += precio
 
     return recaudacion
 
