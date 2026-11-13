@@ -108,7 +108,7 @@ def registrar_clientes(clientes):
     """ 
     Solicita los datos de un nuevo cliente y lo registra en la lista. Se solicitan el nombre, DNI, número de teléfono y contraseña del cliente. 
     Cada dato se valida en el momento en que se ingresa, antes de pedir el siguiente. 
-    Al finalizar, guarda la lista en el archivo JSON y muestra la contraseña enmascarada con asteriscos. 
+    Al finalizar, guarda la lista en el archivo JSON. 
     Parámetros: clientes: lista que contiene diccionarios con los datos de los clientes registrados. 
     Retorna: No retorna ningún valor. Agrega el nuevo cliente a la lista recibida como parámetro. 
     """
