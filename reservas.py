@@ -1,7 +1,8 @@
 import json
 import os
 from canchas import mostrar_canchas
-from datetime import date, timedelta
+from canchas import obtener_canchas_disponibles
+from datetime import date, timedelta, datetime
 RUTA_RESERVAS = os.path.join(
     os.path.dirname(__file__), "reservas.json")
 DIAS_SEMANA=("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado")
@@ -104,20 +105,40 @@ def validar_horario(horario_entrada, horario_salida):
 
 
 def seleccionar_horario():
-    """Solicita al usuario el horario de entrada y salida y valida los datos ingresados
-        Retorna: El horario de entrada y el horario de salida validados
+    """
+    Solicita y valida primero la hora de entrada
+    y después la hora de salida.
     """
     print("\nLos horarios disponibles son de 9 a 23.")
 
     while True:
         try:
             horario_entrada = int(input("Ingrese el horario de entrada: "))
-            horario_salida = int(input("Ingrese el horario de salida: "))
 
-            return validar_horario(horario_entrada, horario_salida)
+            if horario_entrada < 9 or horario_entrada >= 23:
+                print("La hora de entrada debe estar entre las 9 y las 22.")
+                continue
+
+            break
 
         except ValueError:
-            print("Debe ingresar números enteros.")
+            print("Debe ingresar un número entero.")
+
+    while True:
+        try:
+            horario_salida = int(input("Ingrese el horario de salida: "))
+
+            if horario_salida <= horario_entrada:
+                print("La hora de salida debe ser mayor que la de entrada.")
+            elif horario_salida > 23:
+                print("La hora de salida no puede superar las 23.")
+            else:
+                print("Horarios ingresados correctamente.")
+                return horario_entrada, horario_salida
+
+        except ValueError:
+            print("Debe ingresar un número entero.")
+
 
 
 def verificar_horario_reserva(reservas, num_cancha, fecha, horario_entrada, horario_salida):
@@ -182,6 +203,11 @@ def crear_reserva(canchas, reservas, cliente):
     print("CREAR RESERVA")
     print("================================")
 
+    
+    if not obtener_canchas_disponibles(canchas):
+       print("No hay canchas disponibles para realizar reservas.")
+       return
+
     # Genera dias
     dias=generar_dias(7)
     # Seleccionar día
@@ -202,7 +228,13 @@ def crear_reserva(canchas, reservas, cliente):
             print("Debe ingresa un numero entero valido")
 
     # Seleccionar horario
-    horario_entrada, horario_salida = seleccionar_horario()
+    while True:
+       horario_entrada, horario_salida = seleccionar_horario()
+
+       if fecha == date.today() and horario_entrada <= datetime.now().hour:
+        print("No puede reservar un horario que ya pasó.")
+       else:
+          break
 
     # Verificar disponibilidad
     while verificar_horario_reserva(reservas,num_cancha,fecha,horario_entrada,horario_salida) == False:

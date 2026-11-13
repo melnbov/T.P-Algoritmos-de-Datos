@@ -6,27 +6,47 @@ administrador = {
     "dni": "42456789",
     "contraseña": "admin123"
 }
+
 def iniciar_sesion_admin(administrador):
-    """ 
-    Permite iniciar sesión al administrador utilizando su DNI y contraseña. 
-    Primero solicita el DNI y lo vuelve a pedir hasta que coincida con el del administrador. 
-    Luego solicita la contraseña y la vuelve a pedir hasta que sea correcta, sin volver a pedir el DNI. 
-    Parámetros: administrador: diccionario con el nombre, DNI y contraseña del administrador. 
-    Retorna: True cuando el inicio de sesión es exitoso. 
     """
-    dni = input("Ingrese su DNI:")
-    while dni != administrador ["dni"]:
-        print("DNI incorrecto")
-        dni = input("Ingrese nuevamente su DNI:")
+    Permite iniciar sesión al administrador.
+    Tiene un máximo de 3 intentos para el DNI
+    y la contraseña. Permite salir ingresando 0.
+    """
 
-    contraseña = input("Ingrese su contraseña:")
-    while contraseña != administrador["contraseña"]:
-        print("Contraseña incorrecta")
-        contraseña = input("Ingrese nuevamente su contraseña:")
+    for intento in range(3):
+        dni = input("Ingrese su DNI (0 para volver): ")
 
-    print("¡¡¡Inicio de sesion exitoso!!!")
-    print("Bienvenido: ", administrador["nombre"])
-    return True  
+        if dni == "0":
+            print("Volviendo al menú principal.")
+            return False
+
+        if dni == administrador["dni"]:
+            break
+
+        print("DNI incorrecto.")
+
+    else:
+        print("Se agotaron los intentos.")
+        return False
+
+    for intento in range(3):
+        contraseña = input("Ingrese su contraseña (0 para volver): ")
+
+        if contraseña == "0":
+            print("Volviendo al menú principal.")
+            return False
+
+        if contraseña == administrador["contraseña"]:
+            print("¡¡¡Inicio de sesión exitoso!!!")
+            print("Bienvenido:", administrador["nombre"])
+            return True
+
+        print("Contraseña incorrecta.")
+
+    print("Se agotaron los intentos.")
+    return False
+
 
 def mostrar_todas_reservas(reservas, clientes):
     """

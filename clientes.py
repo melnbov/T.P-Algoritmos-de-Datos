@@ -126,8 +126,6 @@ def registrar_clientes(clientes):
 
     clientes.append(nuevo_cliente)
     guardar_clientes(clientes)
-    contraseña_oculta = re.sub(r".", "*", contraseña)
-    print("Contraseña registrada:", contraseña_oculta)
     print ("Cliente registrado correctamente")
     
 def iniciar_sesion_cliente(clientes):
