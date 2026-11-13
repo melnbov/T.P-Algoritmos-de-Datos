@@ -27,12 +27,18 @@ def mostrar_resultado(numero, tipo, funcion, datos, esperado, obtenido):
 # ======================= CASOS VÁLIDOS (4) =======================
 
 def prueba_1_validar_dni_valido():
+    """
+    Comprueba que la función validar_dni acepte un DNI válido.
+    """
     obtenido = clientes.validar_dni("42456789")
     return mostrar_resultado(1, "Caso válido", "clientes.validar_dni",
                              "dni = '42456789'", True, obtenido)
 
 
 def prueba_2_calcular_precio_valido():
+    """
+    Comprueba que se calcule correctamente el precio de una reserva de 3 horas.
+    """
     # 3 horas (de 18 a 21) a $12000 la hora
     obtenido = reservas.calcular_precio(18, 21, 12000)
     return mostrar_resultado(2, "Caso válido", "reservas.calcular_precio",
@@ -41,10 +47,13 @@ def prueba_2_calcular_precio_valido():
 
 
 def prueba_3_calcular_recaudacion_valida():
+    """
+    Comprueba que se calcule correctamente la recaudación de varias reservas activas.
+    """
     lista_reservas = [
-        {"numero_cancha": 1, "precio_total": 10000},
-        {"numero_cancha": 2, "precio_total": 15000},
-        {"numero_cancha": 1, "precio_total": 5000},
+        {"numero_cancha": 1, "precio_total": 10000, "estado": "Activa"},
+        {"numero_cancha": 2, "precio_total": 15000, "estado": "Activa"},
+        {"numero_cancha": 1, "precio_total": 5000, "estado": "Activa"},
     ]
     obtenido = administrador.calcular_recaudacion(lista_reservas)
     return mostrar_resultado(3, "Caso válido", "administrador.calcular_recaudacion",
@@ -53,6 +62,9 @@ def prueba_3_calcular_recaudacion_valida():
 
 
 def prueba_4_obtener_canchas_disponibles_valido():
+    """
+    Comprueba que se obtengan solamente las canchas que están disponibles.
+    """
     lista_canchas = [
         {"numero": 1, "piso": "Cemento", "techo": "Techada", "precio": 8000, "estado": "Disponible"},
         {"numero": 2, "piso": "Resina", "techo": "No techada", "precio": 9000, "estado": "No disponible"},
@@ -69,18 +81,27 @@ def prueba_4_obtener_canchas_disponibles_valido():
 # ======================= CASOS INVÁLIDOS (3) =======================
 
 def prueba_5_validar_telefono_invalido():
+    """
+    Comprueba que la función validar_telefono rechace un teléfono que contiene letras.
+    """
     obtenido = clientes.validar_telefono("11ABC456")
     return mostrar_resultado(5, "Caso inválido", "clientes.validar_telefono",
                              "telefono = '11ABC456' (contiene letras)", False, obtenido)
 
 
 def prueba_6_validar_contrasenia_invalida():
+    """
+    Comprueba que la función validar_contraseña rechace una contraseña de menos de 6 caracteres.
+    """
     obtenido = clientes.validar_contraseña("abc")
     return mostrar_resultado(6, "Caso inválido", "clientes.validar_contraseña",
                              "contraseña = 'abc' (menos de 6 caracteres)", False, obtenido)
 
 
 def prueba_7_horario_superpuesto_invalido():
+    """
+    Comprueba que no se permita realizar una reserva en un horario que ya está ocupado.
+    """
     reservas_existentes = [
         {"numero_cancha": 1, "fecha": "2026-11-10", "hora_inicio": 18,
          "hora_fin": 20, "estado": "Activa"}
@@ -96,6 +117,9 @@ def prueba_7_horario_superpuesto_invalido():
 # ======================= CASOS LÍMITE (2) =======================
 
 def prueba_8_nombre_con_minimo_de_caracteres():
+    """
+    Comprueba que se acepte un nombre que tiene exactamente 3 caracteres.
+    """
     # El mínimo permitido es 3 caracteres
     obtenido = clientes.validar_nombre("Ana")
     return mostrar_resultado(8, "Caso límite", "clientes.validar_nombre",
@@ -103,6 +127,9 @@ def prueba_8_nombre_con_minimo_de_caracteres():
 
 
 def prueba_9_horario_consecutivo_sin_superposicion():
+    """
+    Comprueba que se permita reservar cuando el horario comienza justo al finalizar otra reserva.
+    """
     reservas_existentes = [
         {"numero_cancha": 1, "fecha": "2026-11-10", "hora_inicio": 18,
          "hora_fin": 20, "estado": "Activa"}
@@ -119,6 +146,9 @@ def prueba_9_horario_consecutivo_sin_superposicion():
 # Problemática del sistema: el administrador aumenta los precios de las canchas.
 
 def prueba_10_aumentar_precios():
+    """
+    Comprueba que se aumenten correctamente los precios de las canchas según el porcentaje indicado.
+    """
     lista_canchas = [
         {"numero": 1, "piso": "Cemento", "techo": "Techada", "precio": 10000, "estado": "Disponible"},
         {"numero": 2, "piso": "Resina", "techo": "No techada", "precio": 20000, "estado": "Disponible"},
@@ -145,6 +175,9 @@ def prueba_10_aumentar_precios():
 # ======================= EJECUCIÓN =======================
 
 def ejecutar_pruebas():
+    """
+    Ejecuta todas las pruebas unitarias y muestra la cantidad de pruebas aprobadas.
+    """
     print("======== PRUEBAS UNITARIAS ========\n")
 
     resultados = [

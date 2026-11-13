@@ -1,0 +1,15 @@
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+
+# Entornos virtuales
+venv/
+.venv/
+
+# Configuración del editor
+.vscode/
+.idea/
+
+# Archivos temporales
+*.log
